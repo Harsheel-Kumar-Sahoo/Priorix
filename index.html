@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Priorix — Premium ToDo App Features For Free</title>
+  <!-- Google Fonts: Poppins + Icons + FullCalendar -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  
+  <!-- Firebase Modular SDKs -->
+  <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js",
+        "firebase/auth": "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js"
+      }
+    }
+  </script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.3s ease, color 0.2s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Light theme (default) */
+    body.light {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    body.dark {
+      background: #0a0f1c;
+      color: #f1f5f9;
+    }
+
+    /* Gradient text brand */
+    .brand-gradient {
+      font-weight: 800;
+      font-size: 1.8rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #1e293b, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    body.dark .brand-gradient {
+      background: linear-gradient(135deg, #facc15, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .motto {
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: rgba(249,115,22,0.15);
+      padding: 0.2rem 0.8rem;
+      border-radius: 2rem;
+      margin-left: 0.6rem;
+    }
+
+    /* Auth screens with proper spacing */
+    .auth-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .auth-modal {
+      background: white;
+      border-radius: 2rem;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 25px 45px -12px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+    body.dark .auth-modal {
+      background: #1e293b;
+    }
+    .input-field {
+      margin-bottom: 1.5rem;
+    }
+    .input-field label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #334155;
+    }
+    body.dark .input-field label {
+      color: #cbd5e1;
+    }
+    .input-field input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 1rem;
+      font-family: 'Poppins', sans-serif;
+      background: white;
+      transition: 0.2s;
+      color: #0f172a;
+    }
+    body.dark .input-field input {
+      background: #0f172a;
+      border-color: #475569;
+      color: #f1f5f9;
+    }
+    .input-field input::placeholder {
+      color: #94a3b8;
+    }
+    body.dark .input-field input::placeholder {
+      color: #64748b;
+    }
+    .btn-primary {
+      background: #1e293b;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 0.5rem;
+    }
+    body.dark .btn-primary {
+      background: #f97316;
+      color: #0f172a;
+    }
+    .switch-text {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+    body.dark .switch-text {
+      color: #cbd5e1;
+    }
+    .switch-text span {
+      color: #f97316;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .error-msg {
+      color: #ef4444;
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+
+    /* Navbar distinct background */
+    .navbar {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border: 1px solid #eef2ff;
+    }
+    body.dark .navbar {
+      background: #111827;
+      border-color: #2d3a5e;
+    }
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #f1f5f9;
+      padding: 0.4rem 1rem 0.4rem 1.2rem;
+      border-radius: 2rem;
+    }
+    body.dark .user-section {
+      background: #0f172a;
+    }
+    #userNameDisplay {
+      color: #1e293b;
+      font-weight: 500;
+    }
+    body.dark #userNameDisplay {
+      color: #f1f5f9;
+    }
+    .logout-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #ef4444;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .logout-btn:hover {
+      color: #dc2626;
+      transform: scale(1.05);
+    }
+    /* Modern theme toggle */
+    .theme-toggle {
+      background: #e2e8f0;
+      border: none;
+      border-radius: 3rem;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.3rem;
+      transition: all 0.2s;
+    }
+    body.dark .theme-toggle {
+      background: #334155;
+      color: #facc15;
+    }
+
+    /* Rest of the app styles */
+    .app-main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .view-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: white;
+      padding: 0.4rem;
+      border-radius: 1rem;
+      width: fit-content;
+      margin-bottom: 1.8rem;
+    }
+    body.dark .view-tabs {
+      background: #1e293b;
+    }
+    .view-btn {
+      padding: 0.5rem 1.2rem;
+      border-radius: 0.8rem;
+      border: none;
+      background: transparent;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      color: #475569;
+    }
+    body.dark .view-btn {
+      color: #cbd5e1;
+    }
+    .view-btn.active {
+      background: #f97316;
+      color: white;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 1.8rem;
+    }
+    .create-card, .tasks-panel {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid #edf2f7;
+    }
+    body.dark .create-card, body.dark .tasks-panel {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    .section-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #0f172a;
+    }
+    body.dark .section-title {
+      color: #f1f5f9;
+    }
+    .task-input-modern {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 1rem;
+      font-family: 'Poppins', sans-serif;
+      margin-bottom: 1rem;
+      background: white;
+      color: #0f172a;
+    }
+    body.dark .task-input-modern {
+      background: #0f172a;
+      border-color: #475569;
+      color: #f1f5f9;
+    }
+    .task-input-modern::placeholder {
+      color: #94a3b8;
+    }
+    body.dark .task-input-modern::placeholder {
+      color: #64748b;
+    }
+    .helper-text {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: -0.7rem;
+      margin-bottom: 0.8rem;
+    }
+    body.dark .helper-text {
+      color: #94a3b8;
+    }
+    .task-item {
+      background: #fafcff;
+      border: 1px solid #eef2ff;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    body.dark .task-item {
+      background: #0f172a;
+      border-color: #334155;
+    }
+    .task-item:hover {
+      transform: translateX(3px);
+      border-color: #f97316;
+    }
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .task-title-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .task-check {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+    .task-name {
+      font-weight: 600;
+      color: #0f172a;
+    }
+    body.dark .task-name {
+      color: #f1f5f9;
+    }
+    .task-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 0.6rem;
+      font-size: 0.7rem;
+      color: #64748b;
+    }
+    body.dark .task-meta {
+      color: #94a3b8;
+    }
+    .meta-tag {
+      background: #f1f5f9;
+      padding: 0.2rem 0.6rem;
+      border-radius: 1rem;
+      color: #334155;
+    }
+    body.dark .meta-tag {
+      background: #334155;
+      color: #cbd5e1;
+    }
+    .delete-task {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #94a3b8;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+    .delete-task:hover {
+      color: #ef4444;
+    }
+    /* Footer edge-to-edge black */
+    .global-footer {
+      background-color: #000000;
+      color: #e2e8f0;
+      text-align: center;
+      padding: 1.2rem;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      position: relative;
+      left: 0;
+      right: 0;
+    }
+    .hidden { display: none; }
+    .kanban-board { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; }
+    .kanban-col { flex: 1; background: #f8fafc; border-radius: 1rem; padding: 1rem; min-width: 250px; }
+    body.dark .kanban-col { background: #0f172a; }
+    .kanban-col h4 { color: #0f172a; margin-bottom: 0.8rem; }
+    body.dark .kanban-col h4 { color: #f1f5f9; }
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      max-width: 520px;
+      width: 90%;
+      border-radius: 1.8rem;
+      padding: 2rem;
+      position: relative;
+      animation: fadeInUp 0.2s ease;
+    }
+    body.dark .modal-content {
+      background: #1e293b;
+      color: #f1f5f9;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.8rem;
+      flex-wrap: wrap;
+    }
+    .modal-btn {
+      flex: 1;
+      padding: 0.7rem;
+      border-radius: 1rem;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: 0.2s;
+    }
+    .btn-done { background: #10b981; color: white; }
+    .btn-delete-modal { background: #ef4444; color: white; }
+    .btn-close { background: #64748b; color: white; }
+    .close-modal-icon {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body class="light">
+<div id="root"></div>
+
+<script type="module">
+  import { initializeApp } from "firebase/app";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, deleteDoc, updateDoc, query, where, getDocs, onSnapshot, orderBy, Timestamp } from "firebase/firestore";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBvuLTt4xw0YBlr6yzejIZRMkMIgzi9uIg",
+    authDomain: "advanced-todolist-app.firebaseapp.com",
+    projectId: "advanced-todolist-app",
+    storageBucket: "advanced-todolist-app.firebasestorage.app",
+    messagingSenderId: "260669273812",
+    appId: "1:260669273812:web:3fde886d6c13b43b072d41"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+  let tasksUnsubscribe = null;
+  let allTasks = [];
+  let currentView = "list";
+  let calendarInstance = null;
+
+  // Dark mode helpers
+  function initDarkMode() {
+    const saved = localStorage.getItem('priorix-theme');
+    if (saved === 'dark') document.body.classList.add('dark');
+    else document.body.classList.add('light');
+  }
+  function toggleDarkMode() {
+    if (document.body.classList.contains('light')) {
+      document.body.classList.remove('light'); document.body.classList.add('dark');
+      localStorage.setItem('priorix-theme', 'dark');
+    } else {
+      document.body.classList.remove('dark'); document.body.classList.add('light');
+      localStorage.setItem('priorix-theme', 'light');
+    }
+    // update toggle icon
+    const icon = document.querySelector("#darkModeToggle i");
+    if(icon) icon.className = document.body.classList.contains('dark') ? "fas fa-sun" : "fas fa-moon";
+  }
+  initDarkMode();
+
+  function parseNaturalDueDate(text) {
+    const lower = text.toLowerCase();
+    let due = null;
+    if (lower.includes("tomorrow")) { const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(18,0,0,0); due = d; }
+    else if (lower.includes("today")) { const d = new Date(); d.setHours(19,0,0,0); due = d; }
+    else if (lower.includes("next monday")) { const d = new Date(); d.setDate(d.getDate() + ((1 + 7 - d.getDay()) % 7 || 7)); d.setHours(9,0); due = d; }
+    const timeMatch = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)/i);
+    if(timeMatch && due) { let hour = parseInt(timeMatch[1]); const minute = timeMatch[2] ? parseInt(timeMatch[2]) : 0; const meridian = timeMatch[3].toLowerCase(); if(meridian === 'pm' && hour !== 12) hour += 12; if(meridian === 'am' && hour === 12) hour = 0; due.setHours(hour, minute); }
+    return due;
+  }
+
+  function renderAuth(isLogin = false) {
+    const root = document.getElementById("root");
+    root.innerHTML = `
+      <div class="auth-wrapper">
+        <div class="auth-modal">
+          <div style="text-align:center; margin-bottom:2rem;">
+            <h1><span class="brand-gradient">Priorix</span></h1>
+            <p class="motto" style="background:transparent; margin-top:0.6rem;">Premium ToDo App Features For Free</p>
+          </div>
+          <div id="dynamicAuthForm">
+            ${!isLogin ? `<div class="input-field"><label>Full Name</label><input type="text" id="fullName" placeholder="Alex Johnson" /></div>
+            <div class="input-field"><label>Username (unique)</label><input type="text" id="username" placeholder="@alexj" /></div>` : ''}
+            <div class="input-field"><label>Email</label><input type="email" id="email" placeholder="hello@priorix.com" /></div>
+            <div class="input-field"><label>Password</label><input type="password" id="password" placeholder="••••••••" /></div>
+            <button class="btn-primary" id="authActionBtn">${isLogin ? 'Sign In' : 'Create Account'}</button>
+            <div class="switch-text">${isLogin ? "Don't have an account?" : "Already have an account?"} <span id="toggleAuthMode">${isLogin ? 'Sign up' : 'Log in'}</span></div>
+            <div id="authError" class="error-msg"></div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.getElementById("toggleAuthMode")?.addEventListener("click", () => renderAuth(!isLogin));
+    document.getElementById("authActionBtn").onclick = async () => {
+      const email = document.getElementById("email")?.value.trim();
+      const password = document.getElementById("password")?.value;
+      const errorDiv = document.getElementById("authError");
+      if (!email || !password) { errorDiv.innerText = "Email & password required"; return; }
+      try {
+        if (isLogin) await signInWithEmailAndPassword(auth, email, password);
+        else {
+          const fullName = document.getElementById("fullName")?.value.trim();
+          const username = document.getElementById("username")?.value.trim();
+          if (!fullName || !username) throw new Error("Full name & username required");
+          const usernameQuery = await getDocs(query(collection(db, "usernames"), where("username", "==", username)));
+          if (!usernameQuery.empty) throw new Error("Username taken");
+          const userCred = await createUserWithEmailAndPassword(auth, email, password);
+          await setDoc(doc(db, "users", userCred.user.uid), { fullName, username, email, createdAt: Timestamp.now() });
+          await setDoc(doc(db, "usernames", username), { uid: userCred.user.uid });
+        }
+      } catch (err) { errorDiv.innerText = err.message; }
+    };
+  }
+
+  function showTaskDetails(task) {
+    const modalDiv = document.createElement("div"); modalDiv.className = "modal";
+    const dueDate = task.dueDateTime ? task.dueDateTime.toDate().toLocaleString() : "No deadline";
+    modalDiv.innerHTML = `
+      <div class="modal-content">
+        <span class="close-modal-icon">&times;</span>
+        <h3 style="margin-bottom:1rem;">📌 ${task.title}</h3>
+        <p><strong>Due:</strong> ${dueDate}</p>
+        <p><strong>Priority:</strong> ${task.priority === 1 ? '🔥 Highest' : task.priority === 2 ? 'High' : task.priority === 3 ? 'Medium' : 'Low'}</p>
+        <p><strong>Location:</strong> ${task.location || '—'}</p>
+        <p><strong>Tags:</strong> ${task.tags?.join(', ') || '—'}</p>
+        <p><strong>Recurring:</strong> ${task.recurring || 'None'}</p>
+        <div class="modal-actions">
+          <button id="modalMarkDone" class="modal-btn btn-done">${task.completed ? 'Undo Done' : 'Mark Done'}</button>
+          <button id="modalDeleteTask" class="modal-btn btn-delete-modal">Delete</button>
+          <button id="modalCloseBtn" class="modal-btn btn-close">Close</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modalDiv);
+    const close = () => modalDiv.remove();
+    modalDiv.querySelector(".close-modal-icon")?.addEventListener("click", close);
+    modalDiv.querySelector("#modalCloseBtn")?.addEventListener("click", close);
+    modalDiv.querySelector("#modalMarkDone").onclick = async () => { await updateDoc(doc(db, "tasks", task.id), { completed: !task.completed }); close(); };
+    modalDiv.querySelector("#modalDeleteTask").onclick = async () => { if(confirm("Delete this task?")) { await deleteDoc(doc(db, "tasks", task.id)); close(); } };
+  }
+
+  async function createTaskHandler() {
+    const title = document.getElementById("smartTitle")?.value.trim();
+    if (!title) return alert("Task title required");
+    const manualDue = document.getElementById("dueDeadline")?.value;
+    const finalDue = manualDue ? new Date(manualDue) : parseNaturalDueDate(title);
+    const tagsRaw = document.getElementById("tagsInput")?.value;
+    const tags = tagsRaw ? tagsRaw.split(",").map(t=>t.trim()).filter(t=>t) : [];
+    const priority = parseInt(document.getElementById("prioritySelect")?.value || 3);
+    await addDoc(collection(db, "tasks"), {
+      userId: currentUser.uid, title, createdAt: Timestamp.now(),
+      dueDateTime: finalDue ? Timestamp.fromDate(finalDue) : null,
+      tags, location: document.getElementById("locationInput")?.value.trim() || null,
+      priority, recurring: document.getElementById("recurringInput")?.value.trim() || null,
+      subtasks: [], completed: false, updatedAt: Timestamp.now()
+    });
+    ["smartTitle","dueDeadline","tagsInput","locationInput","recurringInput"].forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; });
+  }
+
+  function renderDashboard() {
+    const root = document.getElementById("root");
+    root.innerHTML = `
+      <div class="app-main">
+        <div class="navbar">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <h1 class="brand-gradient">Priorix</h1>
+            <span class="motto">Premium ToDo App Features For Free</span>
+          </div>
+          <div style="display:flex; gap:1rem; align-items:center;">
+            <button id="darkModeToggle" class="theme-toggle"><i class="fas ${document.body.classList.contains('dark') ? 'fa-sun' : 'fa-moon'}"></i></button>
+            <div class="user-section">
+              <span id="userNameDisplay"></span>
+              <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> <span style="font-size:0.8rem;">Exit</span></button>
+            </div>
+          </div>
+        </div>
+        <div class="view-tabs">
+          <button class="view-btn" data-view="list"><i class="fas fa-list-ul"></i> List</button>
+          <button class="view-btn" data-view="kanban"><i class="fas fa-columns"></i> Kanban</button>
+          <button class="view-btn" data-view="calendar"><i class="fas fa-calendar-alt"></i> Calendar</button>
+        </div>
+        <div class="dashboard-grid">
+          <div class="create-card">
+            <div class="section-title">✨ Smart Task Creator</div>
+            <input type="text" id="smartTitle" class="task-input-modern" placeholder='e.g., "Call John tomorrow 5pm" or "Buy milk #errands p1"'>
+            <input type="datetime-local" id="dueDeadline" class="task-input-modern">
+            <div class="helper-text"><i class="far fa-clock"></i> Due date = deadline (when task should be done). Optional.</div>
+            <input type="text" id="tagsInput" class="task-input-modern" placeholder="#tags, work, home">
+            <select id="prioritySelect" class="task-input-modern">
+              <option value="3">Priority: Medium</option><option value="1">🔥 P1 Highest</option><option value="2">P2 High</option><option value="4">P4 Low</option>
+            </select>
+            <input type="text" id="locationInput" class="task-input-modern" placeholder="📍 Location (optional)">
+            <input type="text" id="recurringInput" class="task-input-modern" placeholder="Recurring: every monday, daily">
+            <button id="createTaskBtn" class="btn-primary" style="background:#f97316;">+ Create Task</button>
+          </div>
+          <div class="tasks-panel">
+            <div id="listViewContainer"></div>
+            <div id="kanbanContainer" class="hidden"></div>
+            <div id="calendarContainer" class="hidden"></div>
+          </div>
+        </div>
+        <div class="global-footer">Made with ❤️ by Harsheel</div>
+      </div>
+    `;
+    document.getElementById("darkModeToggle")?.addEventListener("click", toggleDarkMode);
+    getDoc(doc(db, "users", currentUser.uid)).then(d => { if(d.exists()) document.getElementById("userNameDisplay").innerHTML = `👋 ${d.data().fullName}`; });
+    document.getElementById("logoutBtn").onclick = () => signOut(auth);
+    document.querySelectorAll(".view-btn").forEach(btn => btn.onclick = () => { currentView = btn.dataset.view; document.querySelectorAll(".view-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); renderCurrentView(); });
+    document.querySelector(".view-btn").classList.add("active");
+    document.getElementById("createTaskBtn").onclick = createTaskHandler;
+    if(tasksUnsubscribe) tasksUnsubscribe();
+    tasksUnsubscribe = onSnapshot(query(collection(db,"tasks"), where("userId","==",currentUser.uid), orderBy("createdAt","desc")), snap => { allTasks = snap.docs.map(d=>({id:d.id,...d.data()})); renderCurrentView(); });
+  }
+
+  function renderCurrentView() { if(currentView === "list") renderListView(); else if(currentView === "kanban") renderKanban(); else renderCalendar(); }
+  
+  function renderListView() {
+    const container = document.getElementById("listViewContainer");
+    if(!container) return;
+    if(allTasks.length === 0) { container.innerHTML = `<div style="text-align:center; padding:2rem;">✨ No tasks, create a smart task ✨</div>`; return; }
+    container.innerHTML = "";
+    allTasks.forEach(t => {
+      const div = document.createElement("div"); div.className = "task-item";
+      const priorityIcon = t.priority === 1 ? '🔴' : (t.priority === 2 ? '🟠' : (t.priority===3 ? '🟡' : '🔵'));
+      div.innerHTML = `<div class="task-header"><div class="task-title-wrapper"><input type="checkbox" class="task-check" ${t.completed ? "checked" : ""} data-id="${t.id}"><span class="task-name" style="${t.completed ? 'text-decoration:line-through; opacity:0.6' : ''}">${priorityIcon} ${t.title}</span></div><button class="delete-task" data-id="${t.id}"><i class="far fa-trash-alt"></i></button></div><div class="task-meta">${t.dueDateTime ? `<span><i class="far fa-calendar-alt"></i> Due: ${t.dueDateTime.toDate().toLocaleString()}</span>` : ''} ${t.tags?.map(tg => `<span class="meta-tag">#${tg}</span>`).join('') || ''} ${t.location ? `<span><i class="fas fa-map-marker-alt"></i> ${t.location}</span>` : ''}</div>`;
+      div.querySelector(".task-check").onchange = (e) => { e.stopPropagation(); updateDoc(doc(db,"tasks",t.id),{completed:!t.completed}); };
+      div.querySelector(".delete-task").onclick = (e) => { e.stopPropagation(); deleteDoc(doc(db,"tasks",t.id)); };
+      div.addEventListener("click", (e) => { if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON' && !e.target.closest('.delete-task')) showTaskDetails(t); });
+      container.appendChild(div);
+    });
+  }
+  
+  function renderKanban() {
+    const container = document.getElementById("kanbanContainer");
+    const listDiv = document.getElementById("listViewContainer");
+    const calDiv = document.getElementById("calendarContainer");
+    if(listDiv) listDiv.classList.add("hidden");
+    if(calDiv) calDiv.classList.add("hidden");
+    if(container) { container.classList.remove("hidden"); container.innerHTML = `<div class="kanban-board"><div class="kanban-col"><h4>📋 To Do</h4><div id="todoCol"></div></div><div class="kanban-col"><h4>⚡ High Priority</h4><div id="highCol"></div></div><div class="kanban-col"><h4>✅ Completed</h4><div id="doneCol"></div></div></div>`; }
+    const todoDiv = document.getElementById("todoCol"); const highDiv = document.getElementById("highCol"); const doneDiv = document.getElementById("doneCol");
+    if(todoDiv) allTasks.filter(t=>!t.completed && t.priority>2).forEach(t=>{ const el=document.createElement("div"); el.className="task-item"; el.innerText=t.title; el.style.cursor="pointer"; el.onclick=()=>showTaskDetails(t); todoDiv.appendChild(el); });
+    if(highDiv) allTasks.filter(t=>!t.completed && t.priority<=2).forEach(t=>{ const el=document.createElement("div"); el.className="task-item"; el.innerText="🔥 "+t.title; el.style.cursor="pointer"; el.onclick=()=>showTaskDetails(t); highDiv.appendChild(el); });
+    if(doneDiv) allTasks.filter(t=>t.completed).forEach(t=>{ const el=document.createElement("div"); el.className="task-item"; el.innerHTML=`<s>${t.title}</s>`; el.style.cursor="pointer"; el.onclick=()=>showTaskDetails(t); doneDiv.appendChild(el); });
+  }
+  
+  function renderCalendar() {
+    const container = document.getElementById("calendarContainer");
+    const listDiv = document.getElementById("listViewContainer");
+    const kanDiv = document.getElementById("kanbanContainer");
+    if(listDiv) listDiv.classList.add("hidden");
+    if(kanDiv) kanDiv.classList.add("hidden");
+    if(container) { container.classList.remove("hidden"); container.innerHTML = '<div id="fullcalendarEl"></div>'; }
+    if(calendarInstance) calendarInstance.destroy();
+    const events = allTasks.filter(t=>t.dueDateTime).map(t=>({title:t.title,start:t.dueDateTime.toDate(),extendedProps:{task:t}}));
+    calendarInstance = new FullCalendar.Calendar(document.getElementById("fullcalendarEl"),{initialView:'dayGridMonth',events,eventClick:info=>showTaskDetails(info.event.extendedProps.task),height:'auto'});
+    calendarInstance.render();
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    if(user) { currentUser = user; const docSnap = await getDoc(doc(db,"users",user.uid)); if(!docSnap.exists()) { await signOut(auth); renderAuth(false); } else renderDashboard(); }
+    else { if(tasksUnsubscribe) tasksUnsubscribe(); renderAuth(false); }
+  });
+</script>
+</body>
+</html>
