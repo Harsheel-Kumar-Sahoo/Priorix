@@ -4,13 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
   <title>Priorix — Premium ToDo App Features For Free</title>
-  <!-- Google Fonts: Poppins + Icons + FullCalendar -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
   
-  <!-- Firebase Modular SDKs -->
   <script type="importmap">
     {
       "imports": {
@@ -26,6 +24,10 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
     }
 
     body {
@@ -71,13 +73,14 @@
       white-space: nowrap;
     }
 
-    /* Auth screens - fully responsive */
+    /* Auth screens */
     .auth-wrapper {
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1.5rem;
+      flex: 1;
     }
     .auth-modal {
       background: white;
@@ -158,11 +161,13 @@
       max-width: 1400px;
       margin: 0 auto;
       padding: 1rem;
-      flex: 1;
       width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
     
-    /* Navbar - responsive */
+    /* Navbar */
     .navbar {
       background: #ffffff;
       border-radius: 1.2rem;
@@ -170,11 +175,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       flex-wrap: wrap;
       gap: 0.8rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.03);
       border: 1px solid #eef2ff;
+      flex-shrink: 0;
     }
     body.dark .navbar {
       background: #111827;
@@ -233,13 +239,42 @@
       cursor: pointer;
       font-size: 1.2rem;
       transition: all 0.2s;
+      flex-shrink: 0;
     }
     body.dark .theme-toggle {
       background: #334155;
       color: #facc15;
     }
 
-    /* View Tabs - horizontal scroll on mobile */
+    /* Floating Create Task Button */
+    .create-task-button-container {
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+    .floating-create-btn {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: white;
+      border: none;
+      border-radius: 3rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      width: 100%;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(249,115,22,0.3);
+    }
+    .floating-create-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(249,115,22,0.4);
+    }
+
+    /* View Tabs */
     .view-tabs {
       display: flex;
       gap: 0.5rem;
@@ -250,6 +285,8 @@
       margin-bottom: 1.5rem;
       overflow-x: auto;
       scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+      flex-shrink: 0;
     }
     body.dark .view-tabs {
       background: #1e293b;
@@ -265,6 +302,8 @@
       color: #475569;
       font-size: 0.85rem;
       white-space: nowrap;
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
     body.dark .view-btn {
       color: #cbd5e1;
@@ -274,11 +313,13 @@
       color: white;
     }
 
-    /* Dashboard Grid - responsive (stack on mobile) */
+    /* Dashboard Grid */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
+      flex: 1;
+      min-height: 0;
     }
     @media (min-width: 768px) {
       .dashboard-grid {
@@ -290,6 +331,9 @@
       .brand-gradient {
         font-size: 1.8rem;
       }
+      .create-task-button-container {
+        display: none;
+      }
     }
     
     .create-card, .tasks-panel {
@@ -297,11 +341,14 @@
       border-radius: 1.2rem;
       padding: 1.2rem;
       border: 1px solid #edf2f7;
+      overflow-x: hidden;
+      width: 100%;
     }
     body.dark .create-card, body.dark .tasks-panel {
       background: #1e293b;
       border-color: #334155;
     }
+    
     .section-title {
       font-weight: 600;
       margin-bottom: 1rem;
@@ -341,6 +388,8 @@
       margin-bottom: 0.7rem;
       cursor: pointer;
       transition: 0.15s;
+      width: 100%;
+      overflow-x: hidden;
     }
     body.dark .task-item {
       background: #0f172a;
@@ -351,6 +400,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
     .task-title-wrapper {
       display: flex;
@@ -358,6 +408,7 @@
       gap: 8px;
       flex-wrap: wrap;
       flex: 1;
+      min-width: 0;
     }
     .task-check {
       width: 18px;
@@ -370,6 +421,7 @@
       color: #0f172a;
       font-size: 0.9rem;
       word-break: break-word;
+      flex: 1;
     }
     body.dark .task-name {
       color: #f1f5f9;
@@ -405,35 +457,71 @@
       color: #ef4444;
     }
     
-    /* Kanban - horizontal scroll on mobile */
-    .kanban-board {
+    /* Kanban - Vertical layout (one below the other) */
+    .kanban-vertical {
       display: flex;
-      gap: 1rem;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      scrollbar-width: thin;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
     }
-    .kanban-col {
-      flex: 0 0 260px;
+    .kanban-col-vertical {
       background: #f8fafc;
       border-radius: 1rem;
-      padding: 0.9rem;
+      padding: 1rem;
+      width: 100%;
     }
-    body.dark .kanban-col {
+    body.dark .kanban-col-vertical {
       background: #0f172a;
     }
-    .kanban-col h4 {
+    .kanban-col-vertical h4 {
       color: #0f172a;
-      margin-bottom: 0.7rem;
-      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e2e8f0;
     }
-    body.dark .kanban-col h4 {
+    body.dark .kanban-col-vertical h4 {
       color: #f1f5f9;
+      border-bottom-color: #334155;
+    }
+    .kanban-task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .kanban-task-card {
+      background: white;
+      border-radius: 0.8rem;
+      padding: 0.8rem;
+      cursor: pointer;
+      transition: 0.15s;
+      border: 1px solid #eef2ff;
+    }
+    body.dark .kanban-task-card {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    .kanban-task-card:hover {
+      transform: translateX(4px);
+      border-color: #f97316;
     }
     
-    /* Calendar responsive */
+    /* Calendar */
+    .calendar-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
     #fullcalendarEl {
       font-size: 0.8rem;
+      min-width: 300px;
+    }
+    .fc .fc-toolbar {
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
     .fc .fc-toolbar-title {
       font-size: 1rem !important;
@@ -442,8 +530,11 @@
       padding: 0.3rem 0.6rem !important;
       font-size: 0.7rem !important;
     }
+    .fc .fc-daygrid-day-frame {
+      min-height: 40px;
+    }
     
-    /* Modal responsive */
+    /* Modal */
     .modal {
       position: fixed;
       top: 0;
@@ -499,20 +590,18 @@
       cursor: pointer;
     }
     
-    /* Footer edge-to-edge black */
+    /* Footer - always at bottom, no gaps */
     .global-footer {
       background-color: #000000;
       color: #e2e8f0;
       text-align: center;
       padding: 1rem;
-      margin-top: 2rem;
       font-size: 0.75rem;
-      width: 100vw;
-      margin-left: calc(-50vw + 50%);
-      position: relative;
-      left: 0;
-      right: 0;
+      width: 100%;
+      margin-top: auto;
+      flex-shrink: 0;
     }
+    
     .hidden { display: none; }
     .error-msg {
       color: #ef4444;
@@ -520,9 +609,23 @@
       text-align: center;
       font-size: 0.8rem;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px);}
-      to { opacity: 1; transform: translateY(0);}
+    
+    /* Desktop create card visibility */
+    .desktop-create-card {
+      display: none;
+    }
+    @media (min-width: 768px) {
+      .desktop-create-card {
+        display: block;
+      }
+    }
+    
+    /* Ensure no horizontal overflow */
+    .tasks-panel, .create-card, .dashboard-grid, .app-main, .navbar, .view-tabs {
+      overflow-x: hidden;
+    }
+    .tasks-panel {
+      overflow-x: visible;
     }
   </style>
 </head>
@@ -552,8 +655,8 @@
   let allTasks = [];
   let currentView = "list";
   let calendarInstance = null;
+  let isCreateModalOpen = false;
 
-  // Dark mode helpers
   function initDarkMode() {
     const saved = localStorage.getItem('priorix-theme');
     if (saved === 'dark') document.body.classList.add('dark');
@@ -632,7 +735,7 @@
     modalDiv.innerHTML = `
       <div class="modal-content">
         <span class="close-modal-icon">&times;</span>
-        <h3 style="margin-bottom:0.8rem; font-size:1.2rem;">📌 ${task.title}</h3>
+        <h3 style="margin-bottom:0.8rem; font-size:1.2rem;">📌 ${escapeHtml(task.title)}</h3>
         <p style="margin-bottom:0.4rem;"><strong>Due:</strong> ${dueDate}</p>
         <p style="margin-bottom:0.4rem;"><strong>Priority:</strong> ${task.priority === 1 ? '🔥 Highest' : task.priority === 2 ? 'High' : task.priority === 3 ? 'Medium' : 'Low'}</p>
         <p style="margin-bottom:0.4rem;"><strong>Location:</strong> ${task.location || '—'}</p>
@@ -652,22 +755,63 @@
     modalDiv.querySelector("#modalDeleteTask").onclick = async () => { if(confirm("Delete this task?")) { await deleteDoc(doc(db, "tasks", task.id)); close(); } };
   }
 
-  async function createTaskHandler() {
-    const title = document.getElementById("smartTitle")?.value.trim();
+  function showCreateTaskModal() {
+    if (isCreateModalOpen) return;
+    isCreateModalOpen = true;
+    const modalDiv = document.createElement("div"); modalDiv.className = "modal";
+    modalDiv.innerHTML = `
+      <div class="modal-content">
+        <span class="close-modal-icon">&times;</span>
+        <h3 style="margin-bottom:1rem;">✨ Create New Task</h3>
+        <input type="text" id="modalTaskTitle" class="task-input-modern" placeholder='e.g., "Call John tomorrow 5pm"'>
+        <input type="datetime-local" id="modalDueDate" class="task-input-modern">
+        <div class="helper-text"><i class="far fa-clock"></i> Due date = deadline (optional)</div>
+        <input type="text" id="modalTags" class="task-input-modern" placeholder="#tags, work, home">
+        <select id="modalPriority" class="task-input-modern">
+          <option value="3">Priority: Medium</option><option value="1">🔥 Highest</option><option value="2">High</option><option value="4">Low</option>
+        </select>
+        <input type="text" id="modalLocation" class="task-input-modern" placeholder="📍 Location (optional)">
+        <input type="text" id="modalRecurring" class="task-input-modern" placeholder="Recurring: every monday, daily">
+        <button id="modalCreateBtn" class="btn-primary" style="background:#f97316;">+ Create Task</button>
+      </div>`;
+    document.body.appendChild(modalDiv);
+    const close = () => { modalDiv.remove(); isCreateModalOpen = false; };
+    modalDiv.querySelector(".close-modal-icon")?.addEventListener("click", close);
+    modalDiv.querySelector("#modalCreateBtn").onclick = async () => {
+      const title = document.getElementById("modalTaskTitle")?.value.trim();
+      if (!title) { alert("Task title required"); return; }
+      const manualDue = document.getElementById("modalDueDate")?.value;
+      const finalDue = manualDue ? new Date(manualDue) : parseNaturalDueDate(title);
+      const tagsRaw = document.getElementById("modalTags")?.value;
+      const tags = tagsRaw ? tagsRaw.split(",").map(t=>t.trim()).filter(t=>t) : [];
+      const priority = parseInt(document.getElementById("modalPriority")?.value || 3);
+      await addDoc(collection(db, "tasks"), {
+        userId: currentUser.uid, title, createdAt: Timestamp.now(),
+        dueDateTime: finalDue ? Timestamp.fromDate(finalDue) : null,
+        tags, location: document.getElementById("modalLocation")?.value.trim() || null,
+        priority, recurring: document.getElementById("modalRecurring")?.value.trim() || null,
+        subtasks: [], completed: false, updatedAt: Timestamp.now()
+      });
+      close();
+    };
+  }
+
+  async function createTaskDesktop() {
+    const title = document.getElementById("smartTitleDesktop")?.value.trim();
     if (!title) return alert("Task title required");
-    const manualDue = document.getElementById("dueDeadline")?.value;
+    const manualDue = document.getElementById("dueDeadlineDesktop")?.value;
     const finalDue = manualDue ? new Date(manualDue) : parseNaturalDueDate(title);
-    const tagsRaw = document.getElementById("tagsInput")?.value;
+    const tagsRaw = document.getElementById("tagsInputDesktop")?.value;
     const tags = tagsRaw ? tagsRaw.split(",").map(t=>t.trim()).filter(t=>t) : [];
-    const priority = parseInt(document.getElementById("prioritySelect")?.value || 3);
+    const priority = parseInt(document.getElementById("prioritySelectDesktop")?.value || 3);
     await addDoc(collection(db, "tasks"), {
       userId: currentUser.uid, title, createdAt: Timestamp.now(),
       dueDateTime: finalDue ? Timestamp.fromDate(finalDue) : null,
-      tags, location: document.getElementById("locationInput")?.value.trim() || null,
-      priority, recurring: document.getElementById("recurringInput")?.value.trim() || null,
+      tags, location: document.getElementById("locationInputDesktop")?.value.trim() || null,
+      priority, recurring: document.getElementById("recurringInputDesktop")?.value.trim() || null,
       subtasks: [], completed: false, updatedAt: Timestamp.now()
     });
-    ["smartTitle","dueDeadline","tagsInput","locationInput","recurringInput"].forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; });
+    ["smartTitleDesktop","dueDeadlineDesktop","tagsInputDesktop","locationInputDesktop","recurringInputDesktop"].forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; });
   }
 
   function renderDashboard() {
@@ -687,55 +831,80 @@
             </div>
           </div>
         </div>
+        <div class="create-task-button-container">
+          <button id="mobileCreateTaskBtn" class="floating-create-btn"><i class="fas fa-plus-circle"></i> Create New Task</button>
+        </div>
         <div class="view-tabs">
           <button class="view-btn" data-view="list"><i class="fas fa-list-ul"></i> List</button>
           <button class="view-btn" data-view="kanban"><i class="fas fa-columns"></i> Kanban</button>
           <button class="view-btn" data-view="calendar"><i class="fas fa-calendar-alt"></i> Calendar</button>
         </div>
         <div class="dashboard-grid">
-          <div class="create-card">
+          <div class="create-card desktop-create-card" id="desktopCreateCard">
             <div class="section-title">✨ Smart Task Creator</div>
-            <input type="text" id="smartTitle" class="task-input-modern" placeholder='e.g., "Call John tomorrow 5pm"'>
-            <input type="datetime-local" id="dueDeadline" class="task-input-modern">
+            <input type="text" id="smartTitleDesktop" class="task-input-modern" placeholder='e.g., "Call John tomorrow 5pm"'>
+            <input type="datetime-local" id="dueDeadlineDesktop" class="task-input-modern">
             <div class="helper-text"><i class="far fa-clock"></i> Due date = deadline (when task should be done). Optional.</div>
-            <input type="text" id="tagsInput" class="task-input-modern" placeholder="#tags, work, home">
-            <select id="prioritySelect" class="task-input-modern">
+            <input type="text" id="tagsInputDesktop" class="task-input-modern" placeholder="#tags, work, home">
+            <select id="prioritySelectDesktop" class="task-input-modern">
               <option value="3">Priority: Medium</option><option value="1">🔥 Highest</option><option value="2">High</option><option value="4">Low</option>
             </select>
-            <input type="text" id="locationInput" class="task-input-modern" placeholder="📍 Location (optional)">
-            <input type="text" id="recurringInput" class="task-input-modern" placeholder="Recurring: every monday, daily">
-            <button id="createTaskBtn" class="btn-primary" style="background:#f97316;">+ Create Task</button>
+            <input type="text" id="locationInputDesktop" class="task-input-modern" placeholder="📍 Location (optional)">
+            <input type="text" id="recurringInputDesktop" class="task-input-modern" placeholder="Recurring: every monday, daily">
+            <button id="createTaskBtnDesktop" class="btn-primary" style="background:#f97316;">+ Create Task</button>
           </div>
-          <div class="tasks-panel">
-            <div id="listViewContainer"></div>
-            <div id="kanbanContainer" class="hidden"></div>
-            <div id="calendarContainer" class="hidden"></div>
-          </div>
+          <div id="dynamicContentArea" class="tasks-panel"></div>
         </div>
         <div class="global-footer">Made with ❤️ by Harsheel</div>
       </div>
     `;
+    
+    if(document.getElementById("createTaskBtnDesktop")) {
+      document.getElementById("createTaskBtnDesktop").onclick = createTaskDesktop;
+    }
+    if(document.getElementById("mobileCreateTaskBtn")) {
+      document.getElementById("mobileCreateTaskBtn").onclick = showCreateTaskModal;
+    }
+    
     document.getElementById("darkModeToggle")?.addEventListener("click", toggleDarkMode);
     getDoc(doc(db, "users", currentUser.uid)).then(d => { if(d.exists()) document.getElementById("userNameDisplay").innerHTML = `👋 ${d.data().fullName.split(' ')[0]}`; });
     document.getElementById("logoutBtn").onclick = () => signOut(auth);
-    document.querySelectorAll(".view-btn").forEach(btn => btn.onclick = () => { currentView = btn.dataset.view; document.querySelectorAll(".view-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); renderCurrentView(); });
-    document.querySelector(".view-btn").classList.add("active");
-    document.getElementById("createTaskBtn").onclick = createTaskHandler;
+    
+    const btns = document.querySelectorAll(".view-btn");
+    btns.forEach(btn => {
+      btn.onclick = () => {
+        currentView = btn.dataset.view;
+        btns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderCurrentView();
+      };
+    });
+    document.querySelector(`.view-btn[data-view="${currentView}"]`)?.classList.add("active");
+    
     if(tasksUnsubscribe) tasksUnsubscribe();
-    tasksUnsubscribe = onSnapshot(query(collection(db,"tasks"), where("userId","==",currentUser.uid), orderBy("createdAt","desc")), snap => { allTasks = snap.docs.map(d=>({id:d.id,...d.data()})); renderCurrentView(); });
+    const q = query(collection(db,"tasks"), where("userId","==",currentUser.uid), orderBy("createdAt","desc"));
+    tasksUnsubscribe = onSnapshot(q, snap => { 
+      allTasks = snap.docs.map(d=>({id:d.id,...d.data()})); 
+      renderCurrentView(); 
+    });
   }
-
-  function renderCurrentView() { if(currentView === "list") renderListView(); else if(currentView === "kanban") renderKanban(); else renderCalendar(); }
   
-  function renderListView() {
-    const container = document.getElementById("listViewContainer");
-    if(!container) return;
+  function renderCurrentView() {
+    const dynamicArea = document.getElementById("dynamicContentArea");
+    if(!dynamicArea) return;
+    
+    if(currentView === "list") renderListViewInContainer(dynamicArea);
+    else if(currentView === "kanban") renderKanbanVertical(dynamicArea);
+    else if(currentView === "calendar") renderCalendarInContainer(dynamicArea);
+  }
+  
+  function renderListViewInContainer(container) {
     if(allTasks.length === 0) { container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks, create a smart task ✨</div>`; return; }
     container.innerHTML = "";
     allTasks.forEach(t => {
       const div = document.createElement("div"); div.className = "task-item";
       const priorityIcon = t.priority === 1 ? '🔴' : (t.priority === 2 ? '🟠' : (t.priority===3 ? '🟡' : '🔵'));
-      div.innerHTML = `<div class="task-header"><div class="task-title-wrapper"><input type="checkbox" class="task-check" ${t.completed ? "checked" : ""} data-id="${t.id}"><span class="task-name" style="${t.completed ? 'text-decoration:line-through; opacity:0.6' : ''}">${priorityIcon} ${t.title}</span></div><button class="delete-task" data-id="${t.id}"><i class="far fa-trash-alt"></i></button></div><div class="task-meta">${t.dueDateTime ? `<span><i class="far fa-calendar-alt"></i> ${t.dueDateTime.toDate().toLocaleDateString()}</span>` : ''} ${t.tags?.map(tg => `<span class="meta-tag">#${tg}</span>`).join('') || ''} ${t.location ? `<span><i class="fas fa-map-marker-alt"></i> ${t.location}</span>` : ''}</div>`;
+      div.innerHTML = `<div class="task-header"><div class="task-title-wrapper"><input type="checkbox" class="task-check" ${t.completed ? "checked" : ""} data-id="${t.id}"><span class="task-name" style="${t.completed ? 'text-decoration:line-through; opacity:0.6' : ''}">${priorityIcon} ${escapeHtml(t.title)}</span></div><button class="delete-task" data-id="${t.id}"><i class="far fa-trash-alt"></i></button></div><div class="task-meta">${t.dueDateTime ? `<span><i class="far fa-calendar-alt"></i> ${t.dueDateTime.toDate().toLocaleDateString()}</span>` : ''} ${t.tags?.map(tg => `<span class="meta-tag">#${escapeHtml(tg)}</span>`).join('') || ''} ${t.location ? `<span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.location)}</span>` : ''}</div>`;
       div.querySelector(".task-check").onchange = (e) => { e.stopPropagation(); updateDoc(doc(db,"tasks",t.id),{completed:!t.completed}); };
       div.querySelector(".delete-task").onclick = (e) => { e.stopPropagation(); deleteDoc(doc(db,"tasks",t.id)); };
       div.addEventListener("click", (e) => { if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON' && !e.target.closest('.delete-task')) showTaskDetails(t); });
@@ -743,31 +912,68 @@
     });
   }
   
-  function renderKanban() {
-    const container = document.getElementById("kanbanContainer");
-    const listDiv = document.getElementById("listViewContainer");
-    const calDiv = document.getElementById("calendarContainer");
-    if(listDiv) listDiv.classList.add("hidden");
-    if(calDiv) calDiv.classList.add("hidden");
-    if(container) { container.classList.remove("hidden"); container.innerHTML = `<div class="kanban-board"><div class="kanban-col"><h4>📋 To Do</h4><div id="todoCol"></div></div><div class="kanban-col"><h4>⚡ High Priority</h4><div id="highCol"></div></div><div class="kanban-col"><h4>✅ Completed</h4><div id="doneCol"></div></div></div>`; }
-    const todoDiv = document.getElementById("todoCol"); const highDiv = document.getElementById("highCol"); const doneDiv = document.getElementById("doneCol");
-    if(todoDiv) allTasks.filter(t=>!t.completed && t.priority>2).forEach(t=>{ const el=document.createElement("div"); el.className="task-item"; el.innerText=t.title; el.style.cursor="pointer"; el.style.fontSize="0.85rem"; el.onclick=()=>showTaskDetails(t); todoDiv.appendChild(el); });
-    if(highDiv) allTasks.filter(t=>!t.completed && t.priority<=2).forEach(t=>{ const el=document.createElement("div"); el.className="task-item"; el.innerText="🔥 "+t.title; el.style.cursor="pointer"; el.style.fontSize="0.85rem"; el.onclick=()=>showTaskDetails(t); highDiv.appendChild(el); });
-    if(doneDiv) allTasks.filter(t=>t.completed).forEach(t=>{ const el=document.createElement("div"); el.className="task-item"; el.innerHTML=`<s>${t.title}</s>`; el.style.cursor="pointer"; el.style.fontSize="0.85rem"; el.onclick=()=>showTaskDetails(t); doneDiv.appendChild(el); });
+  function renderKanbanVertical(container) {
+    if(allTasks.length === 0) { container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks to display in Kanban ✨</div>`; return; }
+    
+    const todoTasks = allTasks.filter(t => !t.completed && t.priority > 2);
+    const highPriorityTasks = allTasks.filter(t => !t.completed && t.priority <= 2);
+    const completedTasks = allTasks.filter(t => t.completed);
+    
+    container.innerHTML = `
+      <div class="kanban-vertical">
+        <div class="kanban-col-vertical">
+          <h4><i class="fas fa-inbox"></i> To Do (${todoTasks.length})</h4>
+          <div class="kanban-task-list" id="todoListVertical"></div>
+        </div>
+        <div class="kanban-col-vertical">
+          <h4><i class="fas fa-bolt"></i> High Priority (${highPriorityTasks.length})</h4>
+          <div class="kanban-task-list" id="highListVertical"></div>
+        </div>
+        <div class="kanban-col-vertical">
+          <h4><i class="fas fa-check-circle"></i> Completed (${completedTasks.length})</h4>
+          <div class="kanban-task-list" id="completedListVertical"></div>
+        </div>
+      </div>
+    `;
+    
+    const todoContainer = document.getElementById("todoListVertical");
+    const highContainer = document.getElementById("highListVertical");
+    const completedContainer = document.getElementById("completedListVertical");
+    
+    todoTasks.forEach(task => {
+      const card = document.createElement("div");
+      card.className = "kanban-task-card";
+      card.innerHTML = `<div style="font-weight:500;">${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b; margin-top:4px;">${task.dueDateTime ? task.dueDateTime.toDate().toLocaleDateString() : 'No due'}</div>`;
+      card.onclick = () => showTaskDetails(task);
+      todoContainer.appendChild(card);
+    });
+    
+    highPriorityTasks.forEach(task => {
+      const card = document.createElement("div");
+      card.className = "kanban-task-card";
+      card.innerHTML = `<div style="font-weight:500;">🔥 ${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b; margin-top:4px;">${task.dueDateTime ? task.dueDateTime.toDate().toLocaleDateString() : 'No due'}</div>`;
+      card.onclick = () => showTaskDetails(task);
+      highContainer.appendChild(card);
+    });
+    
+    completedTasks.forEach(task => {
+      const card = document.createElement("div");
+      card.className = "kanban-task-card";
+      card.innerHTML = `<div style="font-weight:500; text-decoration:line-through; opacity:0.7;">${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b; margin-top:4px;">✓ Completed</div>`;
+      card.onclick = () => showTaskDetails(task);
+      completedContainer.appendChild(card);
+    });
   }
   
-  function renderCalendar() {
-    const container = document.getElementById("calendarContainer");
-    const listDiv = document.getElementById("listViewContainer");
-    const kanDiv = document.getElementById("kanbanContainer");
-    if(listDiv) listDiv.classList.add("hidden");
-    if(kanDiv) kanDiv.classList.add("hidden");
-    if(container) { container.classList.remove("hidden"); container.innerHTML = '<div id="fullcalendarEl"></div>'; }
+  function renderCalendarInContainer(container) {
+    container.innerHTML = '<div class="calendar-wrapper"><div id="fullcalendarEl"></div></div>';
     if(calendarInstance) calendarInstance.destroy();
     const events = allTasks.filter(t=>t.dueDateTime).map(t=>({title:t.title,start:t.dueDateTime.toDate(),extendedProps:{task:t}}));
     calendarInstance = new FullCalendar.Calendar(document.getElementById("fullcalendarEl"),{initialView:'dayGridMonth',events,eventClick:info=>showTaskDetails(info.event.extendedProps.task),height:'auto',headerToolbar:{left:'prev,next',center:'title',right:'today'}});
     calendarInstance.render();
   }
+  
+  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
 
   onAuthStateChanged(auth, async (user) => {
     if(user) { currentUser = user; const docSnap = await getDoc(doc(db,"users",user.uid)); if(!docSnap.exists()) { await signOut(auth); renderAuth(false); } else renderDashboard(); }
