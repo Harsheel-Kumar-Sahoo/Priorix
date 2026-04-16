@@ -48,7 +48,34 @@
       color: #f1f5f9;
     }
 
-    /* Gradient text brand */
+    /* Fix for calendar day headers in dark mode */
+    body.dark .fc .fc-col-header-cell-cushion,
+    body.dark .fc .fc-daygrid-day-number,
+    body.dark .fc .fc-toolbar-title,
+    body.dark .fc .fc-button {
+      color: #f1f5f9 !important;
+    }
+    body.dark .fc-theme-standard td, 
+    body.dark .fc-theme-standard th,
+    body.dark .fc-theme-standard .fc-scrollgrid {
+      border-color: #334155 !important;
+    }
+    body.dark .fc .fc-daygrid-day.fc-day-today {
+      background-color: #1e293b !important;
+    }
+
+    /* Brand styling with logo */
+    .brand-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(249,115,22,0.2));
+    }
     .brand-gradient {
       font-weight: 800;
       font-size: 1.6rem;
@@ -93,6 +120,17 @@
     }
     body.dark .auth-modal {
       background: #1e293b;
+    }
+    .auth-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .auth-brand .brand-logo {
+      width: 40px;
+      height: 40px;
     }
     .input-field {
       margin-bottom: 1.2rem;
@@ -156,7 +194,7 @@
       font-weight: 600;
     }
 
-    /* Main App Layout - Mobile First */
+    /* Main App Layout */
     .app-main {
       max-width: 1400px;
       margin: 0 auto;
@@ -204,6 +242,8 @@
       background: #f1f5f9;
       padding: 0.3rem 0.8rem 0.3rem 1rem;
       border-radius: 2rem;
+      cursor: pointer;
+      position: relative;
     }
     body.dark .user-section {
       background: #0f172a;
@@ -216,16 +256,21 @@
     body.dark #userNameDisplay {
       color: #f1f5f9;
     }
-    .logout-btn {
+    .logout-btn, .settings-btn {
       background: none;
       border: none;
       cursor: pointer;
       font-size: 1rem;
-      color: #ef4444;
       transition: 0.2s;
       display: flex;
       align-items: center;
       gap: 4px;
+    }
+    .settings-btn {
+      color: #64748b;
+    }
+    body.dark .settings-btn {
+      color: #cbd5e1;
     }
     .theme-toggle {
       background: #e2e8f0;
@@ -244,6 +289,43 @@
     body.dark .theme-toggle {
       background: #334155;
       color: #facc15;
+    }
+
+    /* Profile dropdown */
+    .profile-dropdown {
+      position: absolute;
+      top: 45px;
+      right: 0;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      min-width: 200px;
+      z-index: 200;
+      overflow: hidden;
+      border: 1px solid #eef2ff;
+    }
+    body.dark .profile-dropdown {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    .profile-dropdown-item {
+      padding: 0.8rem 1.2rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .profile-dropdown-item:hover {
+      background: #f1f5f9;
+    }
+    body.dark .profile-dropdown-item:hover {
+      background: #0f172a;
+    }
+    .profile-dropdown-item i {
+      width: 20px;
+      color: #f97316;
     }
 
     /* Floating Create Task Button */
@@ -268,10 +350,6 @@
       width: 100%;
       transition: all 0.2s;
       box-shadow: 0 4px 12px rgba(249,115,22,0.3);
-    }
-    .floating-create-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(249,115,22,0.4);
     }
 
     /* View Tabs */
@@ -330,6 +408,10 @@
       }
       .brand-gradient {
         font-size: 1.8rem;
+      }
+      .brand-logo {
+        width: 40px;
+        height: 40px;
       }
       .create-task-button-container {
         display: none;
@@ -457,7 +539,7 @@
       color: #ef4444;
     }
     
-    /* Kanban - Vertical layout (one below the other) */
+    /* Kanban - Vertical */
     .kanban-vertical {
       display: flex;
       flex-direction: column;
@@ -505,10 +587,6 @@
       background: #1e293b;
       border-color: #334155;
     }
-    .kanban-task-card:hover {
-      transform: translateX(4px);
-      border-color: #f97316;
-    }
     
     /* Calendar */
     .calendar-wrapper {
@@ -529,9 +607,6 @@
     .fc .fc-button {
       padding: 0.3rem 0.6rem !important;
       font-size: 0.7rem !important;
-    }
-    .fc .fc-daygrid-day-frame {
-      min-height: 40px;
     }
     
     /* Modal */
@@ -590,7 +665,7 @@
       cursor: pointer;
     }
     
-    /* Footer - always at bottom, no gaps */
+    /* Global Footer */
     .global-footer {
       background-color: #000000;
       color: #e2e8f0;
@@ -610,7 +685,6 @@
       font-size: 0.8rem;
     }
     
-    /* Desktop create card visibility */
     .desktop-create-card {
       display: none;
     }
@@ -619,14 +693,6 @@
         display: block;
       }
     }
-    
-    /* Ensure no horizontal overflow */
-    .tasks-panel, .create-card, .dashboard-grid, .app-main, .navbar, .view-tabs {
-      overflow-x: hidden;
-    }
-    .tasks-panel {
-      overflow-x: visible;
-    }
   </style>
 </head>
 <body class="light">
@@ -634,7 +700,7 @@
 
 <script type="module">
   import { initializeApp } from "firebase/app";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
   import { getFirestore, doc, setDoc, getDoc, collection, addDoc, deleteDoc, updateDoc, query, where, getDocs, onSnapshot, orderBy, Timestamp } from "firebase/firestore";
 
   const firebaseConfig = {
@@ -650,12 +716,16 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  // Priorix logo URL
+  const PRIORIX_LOGO = "https://i.postimg.cc/pr9LQnWG/Priorix-Logo.png";
+
   let currentUser = null;
   let tasksUnsubscribe = null;
   let allTasks = [];
   let currentView = "list";
   let calendarInstance = null;
   let isCreateModalOpen = false;
+  let currentUserData = null;
 
   function initDarkMode() {
     const saved = localStorage.getItem('priorix-theme');
@@ -672,6 +742,9 @@
     }
     const icon = document.querySelector("#darkModeToggle i");
     if(icon) icon.className = document.body.classList.contains('dark') ? "fas fa-sun" : "fas fa-moon";
+    if (calendarInstance) {
+      renderCurrentView();
+    }
   }
   initDarkMode();
 
@@ -692,7 +765,10 @@
       <div class="auth-wrapper">
         <div class="auth-modal">
           <div style="text-align:center; margin-bottom:1.5rem;">
-            <h1><span class="brand-gradient">Priorix</span></h1>
+            <div class="auth-brand">
+              <img src="${PRIORIX_LOGO}" alt="Priorix Logo" class="brand-logo">
+              <h1><span class="brand-gradient">Priorix</span></h1>
+            </div>
             <p class="motto" style="background:transparent; margin-top:0.5rem; white-space:normal;">Premium ToDo App Features For Free</p>
           </div>
           <div id="dynamicAuthForm">
@@ -814,20 +890,138 @@
     ["smartTitleDesktop","dueDeadlineDesktop","tagsInputDesktop","locationInputDesktop","recurringInputDesktop"].forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; });
   }
 
+  function openSettings() {
+    const modalDiv = document.createElement("div"); modalDiv.className = "modal";
+    modalDiv.innerHTML = `
+      <div class="modal-content">
+        <span class="close-modal-icon">&times;</span>
+        <h3 style="margin-bottom:1.2rem;"><i class="fas fa-sliders-h"></i> Settings</h3>
+        <div style="margin-bottom:1.5rem;">
+          <label style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+            <span style="flex:1;">Default reminder time</span>
+            <select id="defaultReminder" class="task-input-modern" style="width:auto; margin:0;">
+              <option>10 minutes before</option><option selected>30 minutes before</option><option>1 hour before</option>
+            </select>
+          </label>
+          <label style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
+            <span style="flex:1;">Week starts on</span>
+            <select id="weekStart" class="task-input-modern" style="width:auto; margin:0;">
+              <option>Sunday</option><option selected>Monday</option>
+            </select>
+          </label>
+          <label style="display:flex; align-items:center; gap:0.8rem;">
+            <span style="flex:1;">Show completed tasks in list</span>
+            <input type="checkbox" id="showCompleted" checked style="width:18px; height:18px;">
+          </label>
+        </div>
+        <button class="btn-primary" id="saveSettingsBtn">Save Settings</button>
+      </div>`;
+    document.body.appendChild(modalDiv);
+    const close = () => modalDiv.remove();
+    modalDiv.querySelector(".close-modal-icon")?.addEventListener("click", close);
+    modalDiv.querySelector("#saveSettingsBtn").onclick = () => { alert("Settings saved (demo)"); close(); };
+  }
+
+  function openProfileModal(mode = 'view') {
+    const modalDiv = document.createElement("div"); modalDiv.className = "modal";
+    modalDiv.innerHTML = `
+      <div class="modal-content">
+        <span class="close-modal-icon">&times;</span>
+        <h3 style="margin-bottom:1rem;">👤 ${mode === 'view' ? 'Profile' : 'Edit Profile'}</h3>
+        <div id="profileFormContainer">
+          ${mode === 'view' ? `
+            <p><strong>Name:</strong> ${currentUserData?.fullName || ''}</p>
+            <p><strong>Username:</strong> @${currentUserData?.username || ''}</p>
+            <p><strong>Email:</strong> ${currentUser?.email || ''}</p>
+          ` : `
+            <div class="input-field"><label>Full Name</label><input type="text" id="editFullName" value="${escapeHtml(currentUserData?.fullName || '')}" /></div>
+            <div class="input-field"><label>Username</label><input type="text" id="editUsername" value="${escapeHtml(currentUserData?.username || '')}" /></div>
+            <div class="input-field"><label>New Email</label><input type="email" id="editEmail" placeholder="Leave blank to keep" /></div>
+            <div class="input-field"><label>New Password</label><input type="password" id="editPassword" placeholder="Leave blank to keep" /></div>
+            <div class="input-field"><label>Current Password (required to save)</label><input type="password" id="currentPassword" placeholder="••••••••" /></div>
+            <button class="btn-primary" id="saveProfileBtn">Save Changes</button>
+            <div id="profileError" class="error-msg"></div>
+          `}
+        </div>
+        ${mode === 'view' ? `<button class="btn-primary" id="switchToEditBtn" style="margin-top:1rem;">Edit Profile</button>` : ''}
+      </div>`;
+    document.body.appendChild(modalDiv);
+    const close = () => modalDiv.remove();
+    modalDiv.querySelector(".close-modal-icon")?.addEventListener("click", close);
+    if (mode === 'view') {
+      modalDiv.querySelector("#switchToEditBtn").onclick = () => { close(); openProfileModal('edit'); };
+    } else {
+      modalDiv.querySelector("#saveProfileBtn").onclick = async () => {
+        const fullName = document.getElementById("editFullName")?.value.trim();
+        const username = document.getElementById("editUsername")?.value.trim();
+        const newEmail = document.getElementById("editEmail")?.value.trim();
+        const newPassword = document.getElementById("editPassword")?.value;
+        const currentPass = document.getElementById("currentPassword")?.value;
+        const errorDiv = document.getElementById("profileError");
+        if (!fullName || !username) { errorDiv.innerText = "Name and username required."; return; }
+        if (!currentPass) { errorDiv.innerText = "Current password required."; return; }
+        try {
+          const credential = EmailAuthProvider.credential(currentUser.email, currentPass);
+          await reauthenticateWithCredential(currentUser, credential);
+          const updates = {};
+          if (fullName !== currentUserData.fullName) updates.fullName = fullName;
+          if (username !== currentUserData.username) {
+            const q = await getDocs(query(collection(db, "usernames"), where("username", "==", username)));
+            if (!q.empty && q.docs[0].data().uid !== currentUser.uid) throw new Error("Username taken");
+            await setDoc(doc(db, "usernames", username), { uid: currentUser.uid });
+            updates.username = username;
+          }
+          if (Object.keys(updates).length) await updateDoc(doc(db, "users", currentUser.uid), updates);
+          if (newEmail) await updateEmail(currentUser, newEmail);
+          if (newPassword) await updatePassword(currentUser, newPassword);
+          alert("Profile updated!");
+          close();
+        } catch (err) { errorDiv.innerText = err.message; }
+      };
+    }
+  }
+
+  function toggleProfileDropdown(show) {
+    const existing = document.querySelector('.profile-dropdown');
+    if (existing) existing.remove();
+    if (!show) return;
+    const userSection = document.querySelector('.user-section');
+    if (!userSection) return;
+    const dropdown = document.createElement('div');
+    dropdown.className = 'profile-dropdown';
+    dropdown.innerHTML = `
+      <div class="profile-dropdown-item" id="viewProfileBtn"><i class="fas fa-user"></i> View Profile</div>
+      <div class="profile-dropdown-item" id="editProfileBtn"><i class="fas fa-pen"></i> Edit Profile</div>
+      <div class="profile-dropdown-item" id="logoutProfileBtn"><i class="fas fa-sign-out-alt"></i> Log out</div>
+    `;
+    userSection.style.position = 'relative';
+    userSection.appendChild(dropdown);
+    dropdown.querySelector('#viewProfileBtn').onclick = () => { dropdown.remove(); openProfileModal('view'); };
+    dropdown.querySelector('#editProfileBtn').onclick = () => { dropdown.remove(); openProfileModal('edit'); };
+    dropdown.querySelector('#logoutProfileBtn').onclick = () => { dropdown.remove(); signOut(auth); };
+    setTimeout(() => document.addEventListener('click', function closeDropdown(e) {
+      if (!userSection.contains(e.target)) { dropdown.remove(); document.removeEventListener('click', closeDropdown); }
+    }), 10);
+  }
+
   function renderDashboard() {
     const root = document.getElementById("root");
     root.innerHTML = `
       <div class="app-main">
         <div class="navbar">
           <div class="navbar-left">
-            <h1 class="brand-gradient">Priorix</h1>
+            <div class="brand-wrapper">
+              <img src="${PRIORIX_LOGO}" alt="Priorix Logo" class="brand-logo">
+              <h1 class="brand-gradient">Priorix</h1>
+            </div>
             <span class="motto">Premium ToDo App Features For Free</span>
           </div>
           <div class="navbar-right">
+            <button id="settingsBtn" class="settings-btn"><i class="fas fa-cog"></i></button>
             <button id="darkModeToggle" class="theme-toggle"><i class="fas ${document.body.classList.contains('dark') ? 'fa-sun' : 'fa-moon'}"></i></button>
-            <div class="user-section">
+            <div class="user-section" id="userSection">
               <span id="userNameDisplay"></span>
-              <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i></button>
+              <i class="fas fa-chevron-down" style="font-size:0.7rem;"></i>
             </div>
           </div>
         </div>
@@ -859,16 +1053,21 @@
       </div>
     `;
     
-    if(document.getElementById("createTaskBtnDesktop")) {
-      document.getElementById("createTaskBtnDesktop").onclick = createTaskDesktop;
-    }
-    if(document.getElementById("mobileCreateTaskBtn")) {
-      document.getElementById("mobileCreateTaskBtn").onclick = showCreateTaskModal;
-    }
+    if(document.getElementById("createTaskBtnDesktop")) document.getElementById("createTaskBtnDesktop").onclick = createTaskDesktop;
+    if(document.getElementById("mobileCreateTaskBtn")) document.getElementById("mobileCreateTaskBtn").onclick = showCreateTaskModal;
+    if(document.getElementById("settingsBtn")) document.getElementById("settingsBtn").onclick = openSettings;
     
     document.getElementById("darkModeToggle")?.addEventListener("click", toggleDarkMode);
-    getDoc(doc(db, "users", currentUser.uid)).then(d => { if(d.exists()) document.getElementById("userNameDisplay").innerHTML = `👋 ${d.data().fullName.split(' ')[0]}`; });
-    document.getElementById("logoutBtn").onclick = () => signOut(auth);
+    
+    const userSection = document.getElementById("userSection");
+    userSection.onclick = (e) => { e.stopPropagation(); toggleProfileDropdown(true); };
+    
+    getDoc(doc(db, "users", currentUser.uid)).then(d => { 
+      if(d.exists()) { 
+        currentUserData = d.data();
+        document.getElementById("userNameDisplay").innerHTML = `👋 ${currentUserData.fullName.split(' ')[0]}`; 
+      }
+    });
     
     const btns = document.querySelectorAll(".view-btn");
     btns.forEach(btn => {
@@ -882,7 +1081,7 @@
     document.querySelector(`.view-btn[data-view="${currentView}"]`)?.classList.add("active");
     
     if(tasksUnsubscribe) tasksUnsubscribe();
-    const q = query(collection(db,"tasks"), where("userId","==",currentUser.uid), orderBy("createdAt","desc"));
+    const q = query(collection(db,"tasks"), where("userId","==",currentUser.uid));
     tasksUnsubscribe = onSnapshot(q, snap => { 
       allTasks = snap.docs.map(d=>({id:d.id,...d.data()})); 
       renderCurrentView(); 
@@ -892,19 +1091,35 @@
   function renderCurrentView() {
     const dynamicArea = document.getElementById("dynamicContentArea");
     if(!dynamicArea) return;
-    
     if(currentView === "list") renderListViewInContainer(dynamicArea);
     else if(currentView === "kanban") renderKanbanVertical(dynamicArea);
     else if(currentView === "calendar") renderCalendarInContainer(dynamicArea);
   }
   
+  function formatDateDDMMYYYY(date) {
+    if (!date) return '';
+    const d = date.toDate ? date.toDate() : new Date(date);
+    return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
+  }
+  
   function renderListViewInContainer(container) {
-    if(allTasks.length === 0) { container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks, create a smart task ✨</div>`; return; }
+    const filtered = [...allTasks].filter(t => !t.completed);
+    // Sort by due date ascending (earliest first, nulls last)
+    filtered.sort((a, b) => {
+      if (!a.dueDateTime && !b.dueDateTime) return 0;
+      if (!a.dueDateTime) return 1;
+      if (!b.dueDateTime) return -1;
+      return a.dueDateTime.toDate() - b.dueDateTime.toDate();
+    });
+    const completedTasks = allTasks.filter(t => t.completed);
+    const finalList = [...filtered, ...completedTasks];
+    if(finalList.length === 0) { container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks, create a smart task ✨</div>`; return; }
     container.innerHTML = "";
-    allTasks.forEach(t => {
+    finalList.forEach(t => {
       const div = document.createElement("div"); div.className = "task-item";
       const priorityIcon = t.priority === 1 ? '🔴' : (t.priority === 2 ? '🟠' : (t.priority===3 ? '🟡' : '🔵'));
-      div.innerHTML = `<div class="task-header"><div class="task-title-wrapper"><input type="checkbox" class="task-check" ${t.completed ? "checked" : ""} data-id="${t.id}"><span class="task-name" style="${t.completed ? 'text-decoration:line-through; opacity:0.6' : ''}">${priorityIcon} ${escapeHtml(t.title)}</span></div><button class="delete-task" data-id="${t.id}"><i class="far fa-trash-alt"></i></button></div><div class="task-meta">${t.dueDateTime ? `<span><i class="far fa-calendar-alt"></i> ${t.dueDateTime.toDate().toLocaleDateString()}</span>` : ''} ${t.tags?.map(tg => `<span class="meta-tag">#${escapeHtml(tg)}</span>`).join('') || ''} ${t.location ? `<span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.location)}</span>` : ''}</div>`;
+      const dueStr = t.dueDateTime ? formatDateDDMMYYYY(t.dueDateTime) : '';
+      div.innerHTML = `<div class="task-header"><div class="task-title-wrapper"><input type="checkbox" class="task-check" ${t.completed ? "checked" : ""} data-id="${t.id}"><span class="task-name" style="${t.completed ? 'text-decoration:line-through; opacity:0.6' : ''}">${priorityIcon} ${escapeHtml(t.title)}</span></div><button class="delete-task" data-id="${t.id}"><i class="far fa-trash-alt"></i></button></div><div class="task-meta">${dueStr ? `<span><i class="far fa-calendar-alt"></i> ${dueStr}</span>` : ''} ${t.tags?.map(tg => `<span class="meta-tag">#${escapeHtml(tg)}</span>`).join('') || ''} ${t.location ? `<span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.location)}</span>` : ''}</div>`;
       div.querySelector(".task-check").onchange = (e) => { e.stopPropagation(); updateDoc(doc(db,"tasks",t.id),{completed:!t.completed}); };
       div.querySelector(".delete-task").onclick = (e) => { e.stopPropagation(); deleteDoc(doc(db,"tasks",t.id)); };
       div.addEventListener("click", (e) => { if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON' && !e.target.closest('.delete-task')) showTaskDetails(t); });
@@ -914,55 +1129,21 @@
   
   function renderKanbanVertical(container) {
     if(allTasks.length === 0) { container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks to display in Kanban ✨</div>`; return; }
-    
     const todoTasks = allTasks.filter(t => !t.completed && t.priority > 2);
     const highPriorityTasks = allTasks.filter(t => !t.completed && t.priority <= 2);
     const completedTasks = allTasks.filter(t => t.completed);
-    
     container.innerHTML = `
       <div class="kanban-vertical">
-        <div class="kanban-col-vertical">
-          <h4><i class="fas fa-inbox"></i> To Do (${todoTasks.length})</h4>
-          <div class="kanban-task-list" id="todoListVertical"></div>
-        </div>
-        <div class="kanban-col-vertical">
-          <h4><i class="fas fa-bolt"></i> High Priority (${highPriorityTasks.length})</h4>
-          <div class="kanban-task-list" id="highListVertical"></div>
-        </div>
-        <div class="kanban-col-vertical">
-          <h4><i class="fas fa-check-circle"></i> Completed (${completedTasks.length})</h4>
-          <div class="kanban-task-list" id="completedListVertical"></div>
-        </div>
-      </div>
-    `;
-    
+        <div class="kanban-col-vertical"><h4><i class="fas fa-inbox"></i> To Do (${todoTasks.length})</h4><div class="kanban-task-list" id="todoListVertical"></div></div>
+        <div class="kanban-col-vertical"><h4><i class="fas fa-bolt"></i> High Priority (${highPriorityTasks.length})</h4><div class="kanban-task-list" id="highListVertical"></div></div>
+        <div class="kanban-col-vertical"><h4><i class="fas fa-check-circle"></i> Completed (${completedTasks.length})</h4><div class="kanban-task-list" id="completedListVertical"></div></div>
+      </div>`;
     const todoContainer = document.getElementById("todoListVertical");
     const highContainer = document.getElementById("highListVertical");
     const completedContainer = document.getElementById("completedListVertical");
-    
-    todoTasks.forEach(task => {
-      const card = document.createElement("div");
-      card.className = "kanban-task-card";
-      card.innerHTML = `<div style="font-weight:500;">${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b; margin-top:4px;">${task.dueDateTime ? task.dueDateTime.toDate().toLocaleDateString() : 'No due'}</div>`;
-      card.onclick = () => showTaskDetails(task);
-      todoContainer.appendChild(card);
-    });
-    
-    highPriorityTasks.forEach(task => {
-      const card = document.createElement("div");
-      card.className = "kanban-task-card";
-      card.innerHTML = `<div style="font-weight:500;">🔥 ${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b; margin-top:4px;">${task.dueDateTime ? task.dueDateTime.toDate().toLocaleDateString() : 'No due'}</div>`;
-      card.onclick = () => showTaskDetails(task);
-      highContainer.appendChild(card);
-    });
-    
-    completedTasks.forEach(task => {
-      const card = document.createElement("div");
-      card.className = "kanban-task-card";
-      card.innerHTML = `<div style="font-weight:500; text-decoration:line-through; opacity:0.7;">${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b; margin-top:4px;">✓ Completed</div>`;
-      card.onclick = () => showTaskDetails(task);
-      completedContainer.appendChild(card);
-    });
+    todoTasks.forEach(task => { const card = document.createElement("div"); card.className = "kanban-task-card"; card.innerHTML = `<div style="font-weight:500;">${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b;">${task.dueDateTime ? formatDateDDMMYYYY(task.dueDateTime) : 'No due'}</div>`; card.onclick = () => showTaskDetails(task); todoContainer.appendChild(card); });
+    highPriorityTasks.forEach(task => { const card = document.createElement("div"); card.className = "kanban-task-card"; card.innerHTML = `<div style="font-weight:500;">🔥 ${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b;">${task.dueDateTime ? formatDateDDMMYYYY(task.dueDateTime) : 'No due'}</div>`; card.onclick = () => showTaskDetails(task); highContainer.appendChild(card); });
+    completedTasks.forEach(task => { const card = document.createElement("div"); card.className = "kanban-task-card"; card.innerHTML = `<div style="font-weight:500; text-decoration:line-through; opacity:0.7;">${escapeHtml(task.title)}</div><div style="font-size:0.7rem;">✓ Completed</div>`; card.onclick = () => showTaskDetails(task); completedContainer.appendChild(card); });
   }
   
   function renderCalendarInContainer(container) {
@@ -973,10 +1154,10 @@
     calendarInstance.render();
   }
   
-  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
+  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 
   onAuthStateChanged(auth, async (user) => {
-    if(user) { currentUser = user; const docSnap = await getDoc(doc(db,"users",user.uid)); if(!docSnap.exists()) { await signOut(auth); renderAuth(false); } else renderDashboard(); }
+    if(user) { currentUser = user; const docSnap = await getDoc(doc(db,"users",user.uid)); if(!docSnap.exists()) { await signOut(auth); renderAuth(false); } else { currentUserData = docSnap.data(); renderDashboard(); } }
     else { if(tasksUnsubscribe) tasksUnsubscribe(); renderAuth(false); }
   });
 </script>
