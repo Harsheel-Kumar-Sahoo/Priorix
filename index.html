@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   
   <script type="importmap">
     {
@@ -38,7 +39,6 @@
       flex-direction: column;
     }
 
-    /* Light theme (default) */
     body.light {
       background: #f1f5f9;
       color: #0f172a;
@@ -48,14 +48,13 @@
       color: #f1f5f9;
     }
 
-    /* Splash screen — fullscreen overlay, centered */
     .splash-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: inherit; /* will match body background via light/dark */
+      background: inherit;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -136,14 +135,142 @@
     }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     
-    /* Smaller splash for mobile */
     @media (max-width: 480px) {
       .splash-logo { width: 70px; height: 70px; }
       .splash-title { font-size: 2.4rem; }
       .splash-motto { font-size: 0.8rem; }
     }
 
-    /* Fix for calendar day headers in dark mode */
+    .search-container {
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+    .search-wrapper {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      background: white;
+      padding: 0.5rem;
+      border-radius: 1rem;
+      border: 1px solid #eef2ff;
+    }
+    body.dark .search-wrapper {
+      background: #1e293b;
+      border-color: #334155;
+    }
+    .search-input {
+      flex: 1;
+      padding: 0.6rem 0.8rem;
+      border: none;
+      background: transparent;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      color: #0f172a;
+      outline: none;
+    }
+    body.dark .search-input {
+      color: #f1f5f9;
+    }
+    .search-input::placeholder {
+      color: #94a3b8;
+    }
+
+    .notes-editor {
+      margin: 1rem 0;
+    }
+    .notes-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 0.8rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 0.9rem;
+      font-family: 'Poppins', sans-serif;
+      background: white;
+      color: #0f172a;
+      font-size: 0.9rem;
+      resize: vertical;
+    }
+    body.dark .notes-textarea {
+      background: #0f172a;
+      border-color: #475569;
+      color: #f1f5f9;
+    }
+    .notes-preview {
+      padding: 0.8rem;
+      background: #f8fafc;
+      border-radius: 0.9rem;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    body.dark .notes-preview {
+      background: #0f172a;
+    }
+    .editor-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .editor-tab {
+      padding: 0.3rem 0.8rem;
+      border: none;
+      background: transparent;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 0.8rem;
+      border-radius: 0.5rem;
+    }
+    .editor-tab.active {
+      background: #f97316;
+      color: white;
+    }
+
+    .share-section {
+      margin: 1rem 0;
+    }
+    .share-input-group {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .share-list {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .share-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      background: #f8fafc;
+      border-radius: 0.5rem;
+      margin-bottom: 0.3rem;
+    }
+    body.dark .share-item {
+      background: #0f172a;
+    }
+    .assignee-badge {
+      background: #f97316;
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 1rem;
+      font-size: 0.7rem;
+    }
+
+    .kbd {
+      background: #e2e8f0;
+      border-radius: 0.3rem;
+      padding: 0.15rem 0.4rem;
+      font-size: 0.7rem;
+      font-family: monospace;
+      color: #0f172a;
+    }
+    body.dark .kbd {
+      background: #334155;
+      color: #f1f5f9;
+    }
+
     body.dark .fc .fc-col-header-cell-cushion,
     body.dark .fc .fc-daygrid-day-number,
     body.dark .fc .fc-toolbar-title,
@@ -159,7 +286,6 @@
       background-color: #1e293b !important;
     }
 
-    /* Brand styling with logo */
     .brand-wrapper {
       display: flex;
       align-items: center;
@@ -195,7 +321,6 @@
       white-space: nowrap;
     }
 
-    /* Auth screens */
     .auth-wrapper {
       min-height: 100vh;
       display: flex;
@@ -289,7 +414,6 @@
       font-weight: 600;
     }
 
-    /* Main App Layout */
     .app-main {
       max-width: 1400px;
       margin: 0 auto;
@@ -300,7 +424,6 @@
       flex-direction: column;
     }
     
-    /* Navbar */
     .navbar {
       background: #ffffff;
       border-radius: 1.2rem;
@@ -386,7 +509,6 @@
       color: #facc15;
     }
 
-    /* Profile dropdown */
     .profile-dropdown {
       position: absolute;
       top: 45px;
@@ -423,7 +545,6 @@
       color: #f97316;
     }
 
-    /* Floating Create Task Button */
     .create-task-button-container {
       margin-bottom: 1rem;
       width: 100%;
@@ -447,7 +568,6 @@
       box-shadow: 0 4px 12px rgba(249,115,22,0.3);
     }
 
-    /* View Tabs */
     .view-tabs {
       display: flex;
       gap: 0.5rem;
@@ -486,7 +606,6 @@
       color: white;
     }
 
-    /* Dashboard Grid */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -634,7 +753,6 @@
       color: #ef4444;
     }
     
-    /* Kanban - Vertical */
     .kanban-vertical {
       display: flex;
       flex-direction: column;
@@ -683,7 +801,6 @@
       border-color: #334155;
     }
     
-    /* Calendar */
     .calendar-wrapper {
       width: 100%;
       overflow-x: auto;
@@ -704,7 +821,6 @@
       font-size: 0.7rem !important;
     }
     
-    /* Modal */
     .modal {
       position: fixed;
       top: 0;
@@ -721,7 +837,7 @@
     }
     .modal-content {
       background: white;
-      max-width: 460px;
+      max-width: 500px;
       width: 90%;
       border-radius: 1.5rem;
       padding: 1.5rem;
@@ -760,7 +876,6 @@
       cursor: pointer;
     }
     
-    /* Global Footer */
     .global-footer {
       background-color: #000000;
       color: #e2e8f0;
@@ -796,7 +911,7 @@
 <script type="module">
   import { initializeApp } from "firebase/app";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
-  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, deleteDoc, updateDoc, query, where, getDocs, onSnapshot, orderBy, Timestamp } from "firebase/firestore";
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, deleteDoc, updateDoc, query, where, getDocs, onSnapshot, Timestamp } from "firebase/firestore";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBvuLTt4xw0YBlr6yzejIZRMkMIgzi9uIg",
@@ -811,7 +926,6 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Priorix logo URL
   const PRIORIX_LOGO = "https://i.postimg.cc/pr9LQnWG/Priorix-Logo.png";
 
   let currentUser = null;
@@ -822,10 +936,13 @@
   let isCreateModalOpen = false;
   let currentUserData = null;
   let splashTimer = null;
+  let searchQuery = "";
 
-  // ---- Splash screen helpers ----
+  if (typeof marked !== 'undefined') {
+    marked.setOptions({ breaks: true, gfm: true });
+  }
+
   function showSplashScreen() {
-    // Remove any existing splash
     const existing = document.querySelector('.splash-screen');
     if (existing) existing.remove();
     
@@ -857,6 +974,7 @@
     if (saved === 'dark') document.body.classList.add('dark');
     else document.body.classList.add('light');
   }
+  
   function toggleDarkMode() {
     if (document.body.classList.contains('light')) {
       document.body.classList.remove('light'); document.body.classList.add('dark');
@@ -867,11 +985,39 @@
     }
     const icon = document.querySelector("#darkModeToggle i");
     if(icon) icon.className = document.body.classList.contains('dark') ? "fas fa-sun" : "fas fa-moon";
-    if (calendarInstance) {
-      renderCurrentView();
-    }
+    if (calendarInstance) renderCurrentView();
   }
+  
   initDarkMode();
+
+  function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        if (currentUser) {
+          if (window.innerWidth < 768) {
+            showCreateTaskModal();
+          } else {
+            document.getElementById("smartTitleDesktop")?.focus();
+          }
+        }
+      }
+      
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        document.querySelector('.search-input')?.focus();
+      }
+      
+      if (e.key === 'Escape') {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(m => m.remove());
+        isCreateModalOpen = false;
+        document.querySelector('.profile-dropdown')?.remove();
+      }
+    });
+  }
+  
+  setupKeyboardShortcuts();
 
   function parseNaturalDueDate(text) {
     const lower = text.toLowerCase();
@@ -930,30 +1076,182 @@
     };
   }
 
-  function showTaskDetails(task) {
+  async function showShareModal(task) {
     const modalDiv = document.createElement("div"); modalDiv.className = "modal";
-    const dueDate = task.dueDateTime ? task.dueDateTime.toDate().toLocaleString() : "No deadline";
     modalDiv.innerHTML = `
       <div class="modal-content">
         <span class="close-modal-icon">&times;</span>
-        <h3 style="margin-bottom:0.8rem; font-size:1.2rem;">📌 ${escapeHtml(task.title)}</h3>
+        <h3 style="margin-bottom:1rem;"><i class="fas fa-share-alt"></i> Share "${escapeHtml(task.title)}"</h3>
+        <div class="share-section">
+          <div class="share-input-group">
+            <input type="text" id="shareUsernameInput" class="task-input-modern" placeholder="Enter username" style="flex:1; margin-bottom:0;">
+            <button id="addShareBtn" class="btn-primary" style="width:auto; padding:0.7rem 1rem; margin-top:0;">Add</button>
+          </div>
+          <div class="share-list" id="sharedUsersList">
+            ${(task.sharedWith || []).map(user => `
+              <div class="share-item">
+                <span>@${user.username} ${user.uid === task.assignedTo ? '(Assignee)' : ''}</span>
+                <button class="remove-share-btn" data-username="${user.username}" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-times"></i></button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="share-section">
+          <label style="display:block; margin-bottom:0.5rem; font-weight:500;">Assign to:</label>
+          <select id="assigneeSelect" class="task-input-modern">
+            <option value="">Unassigned</option>
+            <option value="${currentUser.uid}" ${task.assignedTo === currentUser.uid ? 'selected' : ''}>Me (@${currentUserData.username})</option>
+            ${(task.sharedWith || []).map(user => `
+              <option value="${user.uid}" ${task.assignedTo === user.uid ? 'selected' : ''}>@${user.username}</option>
+            `).join('')}
+          </select>
+        </div>
+        <button id="saveShareBtn" class="btn-primary">Save Changes</button>
+        <div id="shareError" class="error-msg"></div>
+      </div>
+    `;
+    document.body.appendChild(modalDiv);
+    
+    const close = () => modalDiv.remove();
+    modalDiv.querySelector(".close-modal-icon")?.addEventListener("click", close);
+    
+    modalDiv.querySelector("#addShareBtn").onclick = async () => {
+      const username = document.getElementById("shareUsernameInput")?.value.trim().replace('@', '');
+      const errorDiv = document.getElementById("shareError");
+      if (!username) {
+        errorDiv.innerText = "Enter a username";
+        return;
+      }
+      if (username === currentUserData.username) {
+        errorDiv.innerText = "You already own this task";
+        return;
+      }
+      
+      try {
+        const usernameQuery = await getDocs(query(collection(db, "usernames"), where("username", "==", username)));
+        if (usernameQuery.empty) {
+          errorDiv.innerText = "User not found";
+          return;
+        }
+        
+        const userData = usernameQuery.docs[0].data();
+        const sharedWith = task.sharedWith || [];
+        if (!sharedWith.find(u => u.username === username)) {
+          sharedWith.push({ username, uid: userData.uid });
+          await updateDoc(doc(db, "tasks", task.id), { sharedWith });
+        }
+        modalDiv.remove();
+        showShareModal({ ...task, sharedWith });
+      } catch (err) {
+        errorDiv.innerText = err.message;
+      }
+    };
+    
+    modalDiv.querySelector("#saveShareBtn").onclick = async () => {
+      const assignee = document.getElementById("assigneeSelect")?.value;
+      await updateDoc(doc(db, "tasks", task.id), { assignedTo: assignee || null });
+      close();
+    };
+    
+    modalDiv.querySelectorAll('.remove-share-btn').forEach(btn => {
+      btn.onclick = async () => {
+        const username = btn.dataset.username;
+        const sharedWith = (task.sharedWith || []).filter(u => u.username !== username);
+        await updateDoc(doc(db, "tasks", task.id), { sharedWith });
+        modalDiv.remove();
+        showShareModal({ ...task, sharedWith });
+      };
+    });
+  }
+
+  function showTaskDetails(task) {
+    const modalDiv = document.createElement("div"); modalDiv.className = "modal";
+    const dueDate = task.dueDateTime ? task.dueDateTime.toDate().toLocaleString() : "No deadline";
+    const isOwner = task.userId === currentUser.uid;
+    const hasAccess = isOwner || (task.sharedWith || []).some(u => u.uid === currentUser.uid);
+    const assignedUsername = task.assignedTo ? 
+      (task.assignedTo === currentUser.uid ? currentUserData.username : 
+       (task.sharedWith || []).find(u => u.uid === task.assignedTo)?.username) : null;
+    
+    modalDiv.innerHTML = `
+      <div class="modal-content">
+        <span class="close-modal-icon">&times;</span>
+        <h3 style="margin-bottom:0.8rem; font-size:1.2rem; display:flex; align-items:center; gap:0.5rem;">
+          📌 ${escapeHtml(task.title)}
+          ${assignedUsername ? `<span class="assignee-badge"><i class="fas fa-user"></i> @${assignedUsername}</span>` : ''}
+        </h3>
         <p style="margin-bottom:0.4rem;"><strong>Due:</strong> ${dueDate}</p>
         <p style="margin-bottom:0.4rem;"><strong>Priority:</strong> ${task.priority === 1 ? '🔥 Highest' : task.priority === 2 ? 'High' : task.priority === 3 ? 'Medium' : 'Low'}</p>
         <p style="margin-bottom:0.4rem;"><strong>Location:</strong> ${task.location || '—'}</p>
         <p style="margin-bottom:0.4rem;"><strong>Tags:</strong> ${task.tags?.join(', ') || '—'}</p>
         <p style="margin-bottom:0.8rem;"><strong>Recurring:</strong> ${task.recurring || 'None'}</p>
+        
+        <div class="notes-editor">
+          <div class="editor-tabs">
+            <button class="editor-tab active" data-tab="write">Write</button>
+            <button class="editor-tab" data-tab="preview">Preview</button>
+          </div>
+          <textarea id="taskNotesInput" class="notes-textarea" placeholder="Add notes (Markdown supported)...">${task.notes || ''}</textarea>
+          <div id="notesPreview" class="notes-preview hidden"></div>
+        </div>
+        
         <div class="modal-actions">
-          <button id="modalMarkDone" class="modal-btn btn-done">${task.completed ? 'Undo Done' : 'Mark Done'}</button>
-          <button id="modalDeleteTask" class="modal-btn btn-delete-modal">Delete</button>
+          ${hasAccess ? `<button id="modalMarkDone" class="modal-btn btn-done">${task.completed ? 'Undo Done' : 'Mark Done'}</button>` : ''}
+          ${isOwner ? `<button id="modalShareTask" class="modal-btn" style="background:#8b5cf6; color:white;"><i class="fas fa-share-alt"></i> Share</button>` : ''}
+          ${isOwner ? `<button id="modalDeleteTask" class="modal-btn btn-delete-modal">Delete</button>` : ''}
+          <button id="modalSaveNotes" class="modal-btn" style="background:#3b82f6; color:white;">Save Notes</button>
           <button id="modalCloseBtn" class="modal-btn btn-close">Close</button>
         </div>
       </div>`;
     document.body.appendChild(modalDiv);
+    
     const close = () => modalDiv.remove();
     modalDiv.querySelector(".close-modal-icon")?.addEventListener("click", close);
     modalDiv.querySelector("#modalCloseBtn")?.addEventListener("click", close);
-    modalDiv.querySelector("#modalMarkDone").onclick = async () => { await updateDoc(doc(db, "tasks", task.id), { completed: !task.completed }); close(); };
-    modalDiv.querySelector("#modalDeleteTask").onclick = async () => { if(confirm("Delete this task?")) { await deleteDoc(doc(db, "tasks", task.id)); close(); } };
+    
+    const notesInput = modalDiv.querySelector("#taskNotesInput");
+    const previewDiv = modalDiv.querySelector("#notesPreview");
+    const tabs = modalDiv.querySelectorAll(".editor-tab");
+    
+    tabs.forEach(tab => {
+      tab.onclick = () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        if (tab.dataset.tab === "preview") {
+          previewDiv.innerHTML = marked.parse(notesInput.value || '*No notes*');
+          previewDiv.classList.remove("hidden");
+          notesInput.classList.add("hidden");
+        } else {
+          previewDiv.classList.add("hidden");
+          notesInput.classList.remove("hidden");
+        }
+      };
+    });
+    
+    modalDiv.querySelector("#modalSaveNotes").onclick = async () => {
+      await updateDoc(doc(db, "tasks", task.id), { notes: notesInput.value });
+      alert("Notes saved!");
+    };
+    
+    if (hasAccess) {
+      modalDiv.querySelector("#modalMarkDone").onclick = async () => {
+        await updateDoc(doc(db, "tasks", task.id), { completed: !task.completed });
+        close();
+      };
+    }
+    
+    if (isOwner) {
+      modalDiv.querySelector("#modalShareTask").onclick = () => {
+        close();
+        showShareModal(task);
+      };
+      modalDiv.querySelector("#modalDeleteTask").onclick = async () => {
+        if(confirm("Delete this task?")) {
+          await deleteDoc(doc(db, "tasks", task.id));
+          close();
+        }
+      };
+    }
   }
 
   function showCreateTaskModal() {
@@ -973,6 +1271,7 @@
         </select>
         <input type="text" id="modalLocation" class="task-input-modern" placeholder="📍 Location (optional)">
         <input type="text" id="modalRecurring" class="task-input-modern" placeholder="Recurring: every monday, daily">
+        <textarea id="modalNotes" class="notes-textarea" placeholder="Notes (optional)..." style="min-height:80px;"></textarea>
         <button id="modalCreateBtn" class="btn-primary" style="background:#f97316;">+ Create Task</button>
       </div>`;
     document.body.appendChild(modalDiv);
@@ -986,12 +1285,14 @@
       const tagsRaw = document.getElementById("modalTags")?.value;
       const tags = tagsRaw ? tagsRaw.split(",").map(t=>t.trim()).filter(t=>t) : [];
       const priority = parseInt(document.getElementById("modalPriority")?.value || 3);
+      const notes = document.getElementById("modalNotes")?.value || '';
       await addDoc(collection(db, "tasks"), {
         userId: currentUser.uid, title, createdAt: Timestamp.now(),
         dueDateTime: finalDue ? Timestamp.fromDate(finalDue) : null,
         tags, location: document.getElementById("modalLocation")?.value.trim() || null,
         priority, recurring: document.getElementById("modalRecurring")?.value.trim() || null,
-        subtasks: [], completed: false, updatedAt: Timestamp.now()
+        notes, subtasks: [], completed: false, updatedAt: Timestamp.now(),
+        sharedWith: [], assignedTo: null
       });
       close();
     };
@@ -1005,14 +1306,18 @@
     const tagsRaw = document.getElementById("tagsInputDesktop")?.value;
     const tags = tagsRaw ? tagsRaw.split(",").map(t=>t.trim()).filter(t=>t) : [];
     const priority = parseInt(document.getElementById("prioritySelectDesktop")?.value || 3);
+    const notes = document.getElementById("desktopNotesInput")?.value || '';
     await addDoc(collection(db, "tasks"), {
       userId: currentUser.uid, title, createdAt: Timestamp.now(),
       dueDateTime: finalDue ? Timestamp.fromDate(finalDue) : null,
       tags, location: document.getElementById("locationInputDesktop")?.value.trim() || null,
       priority, recurring: document.getElementById("recurringInputDesktop")?.value.trim() || null,
-      subtasks: [], completed: false, updatedAt: Timestamp.now()
+      notes, subtasks: [], completed: false, updatedAt: Timestamp.now(),
+      sharedWith: [], assignedTo: null
     });
-    ["smartTitleDesktop","dueDeadlineDesktop","tagsInputDesktop","locationInputDesktop","recurringInputDesktop"].forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; });
+    ["smartTitleDesktop","dueDeadlineDesktop","tagsInputDesktop","locationInputDesktop","recurringInputDesktop","desktopNotesInput"].forEach(id => { 
+      const el = document.getElementById(id); if(el) el.value = ""; 
+    });
   }
 
   function openSettings() {
@@ -1021,6 +1326,23 @@
       <div class="modal-content">
         <span class="close-modal-icon">&times;</span>
         <h3 style="margin-bottom:1.2rem;"><i class="fas fa-sliders-h"></i> Settings</h3>
+        
+        <h4 style="margin-bottom:0.8rem; font-size:0.9rem;">⌨️ Keyboard Shortcuts</h4>
+        <div style="margin-bottom:1.5rem; background:#f8fafc; padding:1rem; border-radius:1rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+            <span>Create new task</span>
+            <span><span class="kbd">Ctrl</span> + <span class="kbd">K</span></span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+            <span>Focus search</span>
+            <span><span class="kbd">Ctrl</span> + <span class="kbd">F</span></span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span>Close modals</span>
+            <span><span class="kbd">Esc</span></span>
+          </div>
+        </div>
+        
         <div style="margin-bottom:1.5rem;">
           <label style="display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem;">
             <span style="flex:1;">Default reminder time</span>
@@ -1033,10 +1355,6 @@
             <select id="weekStart" class="task-input-modern" style="width:auto; margin:0;">
               <option>Sunday</option><option selected>Monday</option>
             </select>
-          </label>
-          <label style="display:flex; align-items:center; gap:0.8rem;">
-            <span style="flex:1;">Show completed tasks in list</span>
-            <input type="checkbox" id="showCompleted" checked style="width:18px; height:18px;">
           </label>
         </div>
         <button class="btn-primary" id="saveSettingsBtn">Save Settings</button>
@@ -1129,6 +1447,17 @@
     }), 10);
   }
 
+  function filterTasksBySearch(tasks) {
+    if (!searchQuery) return tasks;
+    const query = searchQuery.toLowerCase();
+    return tasks.filter(t => 
+      t.title.toLowerCase().includes(query) ||
+      (t.tags || []).some(tag => tag.toLowerCase().includes(query)) ||
+      (t.location || '').toLowerCase().includes(query) ||
+      (t.notes || '').toLowerCase().includes(query)
+    );
+  }
+
   function renderDashboard() {
     const root = document.getElementById("root");
     root.innerHTML = `
@@ -1153,6 +1482,14 @@
         <div class="create-task-button-container">
           <button id="mobileCreateTaskBtn" class="floating-create-btn"><i class="fas fa-plus-circle"></i> Create New Task</button>
         </div>
+        
+        <div class="search-container">
+          <div class="search-wrapper">
+            <i class="fas fa-search" style="color:#94a3b8; margin-left:0.5rem;"></i>
+            <input type="text" class="search-input" id="taskSearchInput" placeholder="Search tasks... (Ctrl+F)" value="${searchQuery}">
+          </div>
+        </div>
+        
         <div class="view-tabs">
           <button class="view-btn" data-view="list"><i class="fas fa-list-ul"></i> List</button>
           <button class="view-btn" data-view="kanban"><i class="fas fa-columns"></i> Kanban</button>
@@ -1170,13 +1507,20 @@
             </select>
             <input type="text" id="locationInputDesktop" class="task-input-modern" placeholder="📍 Location (optional)">
             <input type="text" id="recurringInputDesktop" class="task-input-modern" placeholder="Recurring: every monday, daily">
-            <button id="createTaskBtnDesktop" class="btn-primary" style="background:#f97316;">+ Create Task</button>
+            <textarea id="desktopNotesInput" class="notes-textarea" placeholder="Notes (Markdown supported)..." style="min-height:60px;"></textarea>
+            <button id="createTaskBtnDesktop" class="btn-primary" style="background:#f97316;">+ Create Task (Ctrl+K)</button>
           </div>
           <div id="dynamicContentArea" class="tasks-panel"></div>
         </div>
         <div class="global-footer">Made with ❤️ by Harsheel</div>
       </div>
     `;
+    
+    const searchInput = document.getElementById("taskSearchInput");
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderCurrentView();
+    });
     
     if(document.getElementById("createTaskBtnDesktop")) document.getElementById("createTaskBtnDesktop").onclick = createTaskDesktop;
     if(document.getElementById("mobileCreateTaskBtn")) document.getElementById("mobileCreateTaskBtn").onclick = showCreateTaskModal;
@@ -1206,25 +1550,32 @@
     document.querySelector(`.view-btn[data-view="${currentView}"]`)?.classList.add("active");
     
     if(tasksUnsubscribe) tasksUnsubscribe();
-    const q = query(collection(db,"tasks"), where("userId","==",currentUser.uid));
-    tasksUnsubscribe = onSnapshot(q, snap => { 
-      allTasks = snap.docs.map(d=>({id:d.id,...d.data()})); 
-      renderCurrentView(); 
+    
+    // Simple query - just get user's own tasks
+    const tasksQuery = query(
+      collection(db, "tasks"),
+      where("userId", "==", currentUser.uid)
+    );
+    
+    tasksUnsubscribe = onSnapshot(tasksQuery, (snap) => {
+      allTasks = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      console.log('Tasks loaded:', allTasks.length);
+      renderCurrentView();
+    }, (error) => {
+      console.error('Error loading tasks:', error);
     });
     
-    // After dashboard render, hide splash screen gracefully
     if (splashTimer) clearTimeout(splashTimer);
-    splashTimer = setTimeout(() => {
-      hideSplashScreen();
-    }, 400); // smooth transition after dashboard ready
+    splashTimer = setTimeout(() => hideSplashScreen(), 400);
   }
   
   function renderCurrentView() {
     const dynamicArea = document.getElementById("dynamicContentArea");
     if(!dynamicArea) return;
-    if(currentView === "list") renderListViewInContainer(dynamicArea);
-    else if(currentView === "kanban") renderKanbanVertical(dynamicArea);
-    else if(currentView === "calendar") renderCalendarInContainer(dynamicArea);
+    const filteredTasks = filterTasksBySearch(allTasks);
+    if(currentView === "list") renderListViewInContainer(dynamicArea, filteredTasks);
+    else if(currentView === "kanban") renderKanbanVertical(dynamicArea, filteredTasks);
+    else if(currentView === "calendar") renderCalendarInContainer(dynamicArea, filteredTasks);
   }
   
   function formatDateDDMMYYYY(date) {
@@ -1233,63 +1584,140 @@
     return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
   }
   
-  function renderListViewInContainer(container) {
-    const filtered = [...allTasks].filter(t => !t.completed);
+  function renderListViewInContainer(container, tasks) {
+    const filtered = [...tasks].filter(t => !t.completed);
     filtered.sort((a, b) => {
       if (!a.dueDateTime && !b.dueDateTime) return 0;
       if (!a.dueDateTime) return 1;
       if (!b.dueDateTime) return -1;
       return a.dueDateTime.toDate() - b.dueDateTime.toDate();
     });
-    const completedTasks = allTasks.filter(t => t.completed);
+    const completedTasks = tasks.filter(t => t.completed);
     const finalList = [...filtered, ...completedTasks];
-    if(finalList.length === 0) { container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks, create a smart task ✨</div>`; return; }
+    
+    if(finalList.length === 0) { 
+      container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks yet. Create your first task! ✨</div>`; 
+      return; 
+    }
     container.innerHTML = "";
     finalList.forEach(t => {
       const div = document.createElement("div"); div.className = "task-item";
       const priorityIcon = t.priority === 1 ? '🔴' : (t.priority === 2 ? '🟠' : (t.priority===3 ? '🟡' : '🔵'));
       const dueStr = t.dueDateTime ? formatDateDDMMYYYY(t.dueDateTime) : '';
-      div.innerHTML = `<div class="task-header"><div class="task-title-wrapper"><input type="checkbox" class="task-check" ${t.completed ? "checked" : ""} data-id="${t.id}"><span class="task-name" style="${t.completed ? 'text-decoration:line-through; opacity:0.6' : ''}">${priorityIcon} ${escapeHtml(t.title)}</span></div><button class="delete-task" data-id="${t.id}"><i class="far fa-trash-alt"></i></button></div><div class="task-meta">${dueStr ? `<span><i class="far fa-calendar-alt"></i> ${dueStr}</span>` : ''} ${t.tags?.map(tg => `<span class="meta-tag">#${escapeHtml(tg)}</span>`).join('') || ''} ${t.location ? `<span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.location)}</span>` : ''}</div>`;
-      div.querySelector(".task-check").onchange = (e) => { e.stopPropagation(); updateDoc(doc(db,"tasks",t.id),{completed:!t.completed}); };
-      div.querySelector(".delete-task").onclick = (e) => { e.stopPropagation(); deleteDoc(doc(db,"tasks",t.id)); };
-      div.addEventListener("click", (e) => { if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON' && !e.target.closest('.delete-task')) showTaskDetails(t); });
+      
+      div.innerHTML = `
+        <div class="task-header">
+          <div class="task-title-wrapper">
+            <input type="checkbox" class="task-check" ${t.completed ? "checked" : ""} data-id="${t.id}">
+            <span class="task-name" style="${t.completed ? 'text-decoration:line-through; opacity:0.6' : ''}">
+              ${priorityIcon} ${escapeHtml(t.title)}
+            </span>
+          </div>
+          <button class="delete-task" data-id="${t.id}">
+            <i class="far fa-trash-alt"></i>
+          </button>
+        </div>
+        <div class="task-meta">
+          ${dueStr ? `<span><i class="far fa-calendar-alt"></i> ${dueStr}</span>` : ''} 
+          ${t.tags?.map(tg => `<span class="meta-tag">#${escapeHtml(tg)}</span>`).join('') || ''} 
+          ${t.location ? `<span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(t.location)}</span>` : ''}
+          ${t.notes ? '<span><i class="far fa-file-alt"></i> Notes</span>' : ''}
+        </div>`;
+      
+      div.querySelector(".task-check").onchange = (e) => { 
+        e.stopPropagation(); 
+        updateDoc(doc(db,"tasks",t.id),{completed:!t.completed}); 
+      };
+      
+      div.querySelector(".delete-task").onclick = (e) => { 
+        e.stopPropagation(); 
+        if(confirm("Delete this task?")) deleteDoc(doc(db,"tasks",t.id)); 
+      };
+      
+      div.addEventListener("click", (e) => { 
+        if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON' && !e.target.closest('.delete-task')) 
+          showTaskDetails(t); 
+      });
+      
       container.appendChild(div);
     });
   }
   
-  function renderKanbanVertical(container) {
-    if(allTasks.length === 0) { container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks to display in Kanban ✨</div>`; return; }
-    const todoTasks = allTasks.filter(t => !t.completed && t.priority > 2);
-    const highPriorityTasks = allTasks.filter(t => !t.completed && t.priority <= 2);
-    const completedTasks = allTasks.filter(t => t.completed);
+  function renderKanbanVertical(container, tasks) {
+    if(tasks.length === 0) { 
+      container.innerHTML = `<div style="text-align:center; padding:2rem; font-size:0.9rem;">✨ No tasks to display ✨</div>`; 
+      return; 
+    }
+    const todoTasks = tasks.filter(t => !t.completed && t.priority > 2);
+    const highPriorityTasks = tasks.filter(t => !t.completed && t.priority <= 2);
+    const completedTasks = tasks.filter(t => t.completed);
     container.innerHTML = `
       <div class="kanban-vertical">
         <div class="kanban-col-vertical"><h4><i class="fas fa-inbox"></i> To Do (${todoTasks.length})</h4><div class="kanban-task-list" id="todoListVertical"></div></div>
         <div class="kanban-col-vertical"><h4><i class="fas fa-bolt"></i> High Priority (${highPriorityTasks.length})</h4><div class="kanban-task-list" id="highListVertical"></div></div>
         <div class="kanban-col-vertical"><h4><i class="fas fa-check-circle"></i> Completed (${completedTasks.length})</h4><div class="kanban-task-list" id="completedListVertical"></div></div>
       </div>`;
+    
     const todoContainer = document.getElementById("todoListVertical");
     const highContainer = document.getElementById("highListVertical");
     const completedContainer = document.getElementById("completedListVertical");
-    todoTasks.forEach(task => { const card = document.createElement("div"); card.className = "kanban-task-card"; card.innerHTML = `<div style="font-weight:500;">${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b;">${task.dueDateTime ? formatDateDDMMYYYY(task.dueDateTime) : 'No due'}</div>`; card.onclick = () => showTaskDetails(task); todoContainer.appendChild(card); });
-    highPriorityTasks.forEach(task => { const card = document.createElement("div"); card.className = "kanban-task-card"; card.innerHTML = `<div style="font-weight:500;">🔥 ${escapeHtml(task.title)}</div><div style="font-size:0.7rem; color:#64748b;">${task.dueDateTime ? formatDateDDMMYYYY(task.dueDateTime) : 'No due'}</div>`; card.onclick = () => showTaskDetails(task); highContainer.appendChild(card); });
-    completedTasks.forEach(task => { const card = document.createElement("div"); card.className = "kanban-task-card"; card.innerHTML = `<div style="font-weight:500; text-decoration:line-through; opacity:0.7;">${escapeHtml(task.title)}</div><div style="font-size:0.7rem;">✓ Completed</div>`; card.onclick = () => showTaskDetails(task); completedContainer.appendChild(card); });
+    
+    todoTasks.forEach(task => { 
+      const card = document.createElement("div"); 
+      card.className = "kanban-task-card"; 
+      card.innerHTML = `
+        <div style="font-weight:500;">${escapeHtml(task.title)}</div>
+        <div style="font-size:0.7rem; color:#64748b;">${task.dueDateTime ? formatDateDDMMYYYY(task.dueDateTime) : 'No due'}</div>
+      `; 
+      card.onclick = () => showTaskDetails(task); 
+      todoContainer.appendChild(card); 
+    });
+    
+    highPriorityTasks.forEach(task => { 
+      const card = document.createElement("div"); 
+      card.className = "kanban-task-card"; 
+      card.innerHTML = `
+        <div style="font-weight:500;">🔥 ${escapeHtml(task.title)}</div>
+        <div style="font-size:0.7rem; color:#64748b;">${task.dueDateTime ? formatDateDDMMYYYY(task.dueDateTime) : 'No due'}</div>
+      `; 
+      card.onclick = () => showTaskDetails(task); 
+      highContainer.appendChild(card); 
+    });
+    
+    completedTasks.forEach(task => { 
+      const card = document.createElement("div"); 
+      card.className = "kanban-task-card"; 
+      card.innerHTML = `
+        <div style="font-weight:500; text-decoration:line-through; opacity:0.7;">${escapeHtml(task.title)}</div>
+        <div style="font-size:0.7rem;">✓ Completed</div>
+      `; 
+      card.onclick = () => showTaskDetails(task); 
+      completedContainer.appendChild(card); 
+    });
   }
   
-  function renderCalendarInContainer(container) {
+  function renderCalendarInContainer(container, tasks) {
     container.innerHTML = '<div class="calendar-wrapper"><div id="fullcalendarEl"></div></div>';
     if(calendarInstance) calendarInstance.destroy();
-    const events = allTasks.filter(t=>t.dueDateTime).map(t=>({title:t.title,start:t.dueDateTime.toDate(),extendedProps:{task:t}}));
-    calendarInstance = new FullCalendar.Calendar(document.getElementById("fullcalendarEl"),{initialView:'dayGridMonth',events,eventClick:info=>showTaskDetails(info.event.extendedProps.task),height:'auto',headerToolbar:{left:'prev,next',center:'title',right:'today'}});
+    const events = tasks.filter(t=>t.dueDateTime).map(t=>({title:t.title,start:t.dueDateTime.toDate(),extendedProps:{task:t}}));
+    calendarInstance = new FullCalendar.Calendar(document.getElementById("fullcalendarEl"),{
+      initialView:'dayGridMonth',
+      events,
+      eventClick:info=>showTaskDetails(info.event.extendedProps.task),
+      height:'auto',
+      headerToolbar:{left:'prev,next',center:'title',right:'today'}
+    });
     calendarInstance.render();
   }
   
-  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
+  function escapeHtml(str) { 
+    if(!str) return ''; 
+    return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); 
+  }
 
   onAuthStateChanged(auth, async (user) => {
     if(user) { 
       currentUser = user; 
-      // Show splash immediately when user is signed in
       showSplashScreen();
       
       const docSnap = await getDoc(doc(db,"users",user.uid));
@@ -1299,12 +1727,12 @@
         renderAuth(false); 
       } else { 
         currentUserData = docSnap.data(); 
-        renderDashboard(); // splash will be hidden inside renderDashboard after short delay
+        renderDashboard();
       }
     }
     else { 
       if(tasksUnsubscribe) tasksUnsubscribe(); 
-      hideSplashScreen(); // ensure no splash stuck if logged out
+      hideSplashScreen();
       renderAuth(false); 
     }
   });
