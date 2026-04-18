@@ -1,0 +1,13 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Priorix",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Priorix",
+  "start_url": "harsheel-kumar-sahoo.github.io/Priorix",
+  "theme_color": "#ffffff",
+  "id": "Priorix",
+  "description": "An advanced todo app"
+}
