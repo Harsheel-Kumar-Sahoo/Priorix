@@ -48,6 +48,101 @@
       color: #f1f5f9;
     }
 
+    /* Splash screen — fullscreen overlay, centered */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit; /* will match body background via light/dark */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5000;
+      backdrop-filter: blur(6px);
+      transition: opacity 0.35s ease;
+      opacity: 1;
+    }
+    body.light .splash-screen {
+      background: #f1f5f9;
+    }
+    body.dark .splash-screen {
+      background: #0a0f1c;
+    }
+    .splash-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .splash-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem;
+    }
+    .splash-logo {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(249,115,22,0.25));
+      margin-bottom: 0.75rem;
+      animation: floatLogo 2.2s infinite ease-in-out;
+    }
+    .splash-title {
+      font-weight: 800;
+      font-size: 3.2rem;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #1e293b, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    body.dark .splash-title {
+      background: linear-gradient(135deg, #facc15, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    .splash-motto {
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: rgba(249,115,22,0.12);
+      padding: 0.4rem 1.2rem;
+      border-radius: 3rem;
+      color: #1e293b;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(249,115,22,0.2);
+    }
+    body.dark .splash-motto {
+      color: #f1f5f9;
+      background: rgba(249,115,22,0.18);
+    }
+    .splash-loader {
+      margin-top: 2rem;
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(249,115,22,0.2);
+      border-top: 3px solid #f97316;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes floatLogo {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+      100% { transform: translateY(0); }
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    /* Smaller splash for mobile */
+    @media (max-width: 480px) {
+      .splash-logo { width: 70px; height: 70px; }
+      .splash-title { font-size: 2.4rem; }
+      .splash-motto { font-size: 0.8rem; }
+    }
+
     /* Fix for calendar day headers in dark mode */
     body.dark .fc .fc-col-header-cell-cushion,
     body.dark .fc .fc-daygrid-day-number,
@@ -726,6 +821,36 @@
   let calendarInstance = null;
   let isCreateModalOpen = false;
   let currentUserData = null;
+  let splashTimer = null;
+
+  // ---- Splash screen helpers ----
+  function showSplashScreen() {
+    // Remove any existing splash
+    const existing = document.querySelector('.splash-screen');
+    if (existing) existing.remove();
+    
+    const splash = document.createElement('div');
+    splash.className = 'splash-screen';
+    splash.innerHTML = `
+      <div class="splash-content">
+        <img src="${PRIORIX_LOGO}" alt="Priorix Logo" class="splash-logo">
+        <div class="splash-title">Priorix</div>
+        <div class="splash-motto">Premium ToDo App Features For Free</div>
+        <div class="splash-loader"></div>
+      </div>
+    `;
+    document.body.appendChild(splash);
+    return splash;
+  }
+
+  function hideSplashScreen() {
+    const splash = document.querySelector('.splash-screen');
+    if (!splash) return;
+    splash.classList.add('fade-out');
+    setTimeout(() => {
+      if (splash.parentNode) splash.remove();
+    }, 350);
+  }
 
   function initDarkMode() {
     const saved = localStorage.getItem('priorix-theme');
@@ -1086,6 +1211,12 @@
       allTasks = snap.docs.map(d=>({id:d.id,...d.data()})); 
       renderCurrentView(); 
     });
+    
+    // After dashboard render, hide splash screen gracefully
+    if (splashTimer) clearTimeout(splashTimer);
+    splashTimer = setTimeout(() => {
+      hideSplashScreen();
+    }, 400); // smooth transition after dashboard ready
   }
   
   function renderCurrentView() {
@@ -1104,7 +1235,6 @@
   
   function renderListViewInContainer(container) {
     const filtered = [...allTasks].filter(t => !t.completed);
-    // Sort by due date ascending (earliest first, nulls last)
     filtered.sort((a, b) => {
       if (!a.dueDateTime && !b.dueDateTime) return 0;
       if (!a.dueDateTime) return 1;
@@ -1157,8 +1287,26 @@
   function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]); }
 
   onAuthStateChanged(auth, async (user) => {
-    if(user) { currentUser = user; const docSnap = await getDoc(doc(db,"users",user.uid)); if(!docSnap.exists()) { await signOut(auth); renderAuth(false); } else { currentUserData = docSnap.data(); renderDashboard(); } }
-    else { if(tasksUnsubscribe) tasksUnsubscribe(); renderAuth(false); }
+    if(user) { 
+      currentUser = user; 
+      // Show splash immediately when user is signed in
+      showSplashScreen();
+      
+      const docSnap = await getDoc(doc(db,"users",user.uid));
+      if(!docSnap.exists()) { 
+        hideSplashScreen();
+        await signOut(auth); 
+        renderAuth(false); 
+      } else { 
+        currentUserData = docSnap.data(); 
+        renderDashboard(); // splash will be hidden inside renderDashboard after short delay
+      }
+    }
+    else { 
+      if(tasksUnsubscribe) tasksUnsubscribe(); 
+      hideSplashScreen(); // ensure no splash stuck if logged out
+      renderAuth(false); 
+    }
   });
 </script>
 </body>
